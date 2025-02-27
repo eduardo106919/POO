@@ -32,6 +32,8 @@ public class Circle {
     /**
      * Parameterized constructor for a Circle
      *
+     * If radius is less than zero, the absolute value is used
+     *
      * @param x value for the x coordinate
      * @param y value for the y coordinate
      * @param radius value for the radius of the Circle
@@ -41,7 +43,7 @@ public class Circle {
         this.y = y;
 
         // radius must be positive
-        this. radius = radius;
+        this.radius = Math.abs(radius);
     }
 
     /**
@@ -59,6 +61,8 @@ public class Circle {
     /**
      * Instance Methods
      */
+
+    // getters
 
     /**
      * Returns the value of the horizontal coordinate of the center
@@ -87,6 +91,8 @@ public class Circle {
         return this.radius;
     }
 
+    // setters
+
     /**
      * Changes the value of the horizontal coordinate of the center
      *
@@ -113,6 +119,8 @@ public class Circle {
     public void set_radius(double radius) {
         this.radius = radius;
     }
+
+    // other methods
 
     /**
      * Changes the position of the center
