@@ -103,5 +103,4 @@ public class Sensor {
     public String toString() {
         return "pressure: " + this.pressure;
     }
-
 }
