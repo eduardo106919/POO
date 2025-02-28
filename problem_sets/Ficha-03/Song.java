@@ -14,7 +14,9 @@ public class Song {
     private String editor_name;
 
     private String[] lyrics;
+    private int lyrics_count;
     private String[] notes;
+    private int notes_count;
 
     private int duration;
     private int streams;
@@ -28,13 +30,15 @@ public class Song {
      * Constructor for an empty Song
      */
     public Song() {
-       this.name = "";
-       this.interpreter = "";
-       this.author = "";
-       this.editor_name = "";
+       this.name = null;
+       this.interpreter = null;
+       this.author = null;
+       this.editor_name = null;
 
        this.lyrics = null;
+       this.lyrics_count = 0;
        this.notes = null;
+       this.notes_count = 0;
 
        this.duration = 0;
        this.streams = 0;
@@ -58,8 +62,12 @@ public class Song {
         this.author = author;
         this.editor_name = editor_name;
 
+        // does not break encapsulation, Strings are imutable
         this.lyrics = lyrics.clone();
+        this.lyrics_count = lyrics.length;
+
         this.notes = notes.clone();
+        this.notes_count = notes.length;
 
         this.duration = duration;
         this.streams = streams;
@@ -76,8 +84,12 @@ public class Song {
         this.author = other.get_author();
         this.editor_name = other.get_editor_name();
 
+        // does not break encapsulation, Strings are imutable
         this.lyrics = other.get_lyrics();
+        this.lyrics_count = other.lyrics_count;
+
         this.notes = other.get_notes();
+        this.notes_count = other.notes_count;
         
         this.duration = other.get_duration();
         this.streams = other.get_streams();
@@ -236,6 +248,8 @@ public class Song {
         this.streams = streams;
     }
 
+    // other methods
+
     /**
      * Checks if obj is equal to the caller
      *
@@ -269,10 +283,21 @@ public class Song {
      * @return String with the Song information
      */
     public String toString() {
-        return "name: "        + this.name              + " | interpreter: " + this.interpreter + 
-               " | author: "   + this.author            + " | editor: "      + this.editor_name + 
-               " | lyrics: "   + this.lyrics.toString() + " | notes: "       + this.notes.toString() + 
-               " | duration: " + this.duration          + " | streams: "     + this.streams;
+        String lyrics = "";
+        if (this.lyrics != null) {
+            for (int i = 0; i < this.lyrics_count; i++)
+                lyrics += this.lyrics[i];
+        }
+        String notes = "";
+        if (this.notes != null) {
+            for (int i = 0; i < this.notes_count; i++)
+                notes += this.notes[i];
+        }
+
+        return "name: "       + this.name      + "\ninterpreter: " + this.interpreter + 
+               "\nauthor: "   + this.author    + "\neditor: "      + this.editor_name + 
+               "\nlyrics: "   + lyrics         + "\nnotes: "       + notes + 
+               "\nduration: " + this.duration  + "\nstreams: "     + this.streams;
     }
 
     /**
@@ -304,9 +329,22 @@ public class Song {
      * @param new_line line to add to the lyrics
      */
     public void add_line(int position, String new_line) {
+        // lyrics are full
+        if (this.lyrics_count == this.lyrics.length) {
+            // double the size
+            String[] temp = new String[this.lyrics_count * 2];
+            for (int i = 0; i < lyrics_count; i++)
+                temp[i] = this.lyrics[i];
 
-        // TODO
+            this.lyrics = temp;
+        }
+        
+        for (int i = this.lyrics_count; i > position; i--) {
+            this.lyrics[i] = this.lyrics[i - 1];
+        }
 
+        this.lyrics[position] = new_line;
+        this.lyrics_count++;
     }
 
     /**
@@ -319,8 +357,10 @@ public class Song {
         String max = null;
 
         for (String item: this.lyrics)
-            if (item.length() > max_len)
+            if (item.length() > max_len) {
                 max = item;
+                max_len = item.length();
+            }
 
         return max;
     }
@@ -331,9 +371,45 @@ public class Song {
      * @return 3 most used letters
      */
     public String[] most_used_letters() {
+        String[] result = new String[3];
+        int count = 0;
+        int[] max_counts = {0, 0, 0};
+        int i, j;
 
-        // TODO
+        for (i = 0; i < this.lyrics_count; i++) {
+            count = 0;
 
-        return null;
+            // count how many times item occurs (atleast 1)
+            for (j = 0; j < this.lyrics_count; j++) {
+                if (this.lyrics[i].equals(this.lyrics[j]))
+                    count++;
+            }
+
+            if (this.lyrics[i].equals(result[0]) == false && this.lyrics[i].equals(result[1]) == false && this.lyrics[i].equals(result[2]) == false) {
+                if (count > max_counts[0] && (this.lyrics[i].equals(result[0]) == false)) {
+                    max_counts[2] = max_counts[1];
+                    max_counts[1] = max_counts[0];
+                    max_counts[0] = count;
+
+                    // switch the strings
+                    result[2] = result[1];
+                    result[1] = result[0];
+                    result[0] = this.lyrics[i];
+                } else if (count > max_counts[1] && (this.lyrics[i].equals(result[1]) == false)) {
+                    max_counts[2] = max_counts[1];
+                    max_counts[1] = count;
+
+                    // switch the strings
+                    result[2] = result[1];
+                    result[1] = this.lyrics[i];
+                } else if (count > max_counts[2] && (this.lyrics[i].equals(result[2]) == false)) {
+                    max_counts[2] = count;
+
+                    result[2] = this.lyrics[i];
+                }
+            }
+        }
+
+        return result;
     }
 }

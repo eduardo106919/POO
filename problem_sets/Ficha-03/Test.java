@@ -120,6 +120,99 @@ public class Test {
 
                 break;
             case 3:
+                // Song
+                System.out.println("Class -> Song");
+
+                Song music1 = new Song();
+                String[] lyrics = {"\n\tThese niggas talkin' out of they necks",
+                                   "\n\tDon't pull no coffin out of your mouth",
+                                   "\n\tI'm way too paranoid for a threat",
+                                   "\n\tAyy-ayy, let's get it, bro",
+                                   "\n\tD-O-T, the money, power, respect",
+                                   "\n\tThe last one is better",
+                                   "\n\tSay, it's a lot of goofies with a check",
+                                   "\n\tI mean, ah, I hope them sentiments symbolic",
+                                   "\n\tAh, my temperament bipolar, I choose violence",
+                                   "\n\tOkay, let's get it up, it's time for him to prove that he's a problem",
+                                   "\n\tNiggas clickin' up, but cannot be legit, no 40 water, tell 'em",
+                                   "\n\tAh, yeah, huh, yeah, get up with me (he was once a thug, he was, he -)",
+                                   "\n\tFuck sneak dissin', first person shooter (he was once a thug, he was, he -)",
+                                   "\n\tI hope they came with three switches (he was once a thug, he was, he -)",
+                                   "\n\tI crash out, like, 'Fuck rap,  this Melle Mel if I had to (he was once a thug, he was, he -)",
+                                   "\n\tGot two T's with me, I'm snatchin' chains and burnin' tattoos",
+                                   "\n\tIt's up, lost too many soldiers not to play it safe",
+                                   "\n\tIf he walk around with that stick, it ain't Andre 3K",
+                                   "\n\tThink I won't drop the location? I still got PTSD",
+                                   "\n\tMotherfuck the big three, nigga, it's just big me"};
+                String[] notes = {"\n\tlalalal", "\n\tlalalala", "\n\tdjfskd"};
+                Song music2 = new Song("Like that", "Future K Dot", "Metro Boomin", "Young Metro", lyrics, notes, 268, 695586936);
+                Song music3 = new Song(music2);
+
+                System.out.println("music1:");
+                System.out.println(music1.toString());
+
+                System.out.println("\nmusic2:");
+                System.out.println(music2.toString());
+
+                System.out.println("\nmusic3:");
+                System.out.println(music3.toString());
+
+                System.out.println("\ntesting getters and setters");
+                music1.set_name(music2.get_name());
+                music1.set_interpreter(music2.get_interpreter());
+                music1.set_author(music2.get_author());
+                music1.set_editor_name(music2.get_editor_name());
+                music1.set_lyrics(music2.get_lyrics());
+                music1.set_notes(music2.get_notes());
+                music1.set_duration(music2.get_duration());
+                music1.set_streams(music2.get_streams());
+                
+                System.out.println("music1:");
+                System.out.println(music1.toString());
+
+                System.out.println("music1 is equal to music3: " + music1.equals(music3));
+                System.out.println("\nchanging music2 name and author:");
+                music2.set_name("Not like us");
+                music2.set_author("Kendrick Lamar");
+
+                System.out.println("music2:");
+                System.out.println(music2.toString());
+
+                System.out.println("How many lines do the music3 lyrics have: " + music3.lyrics_lines_count());
+                System.out.println("How many characters dot the music3 lyrics have: " + music3.total_lyrics_chars());
+                System.out.println("Longest line in music3: " + music3.longest_line());
+
+                System.out.println("adding: The last one is better");
+                music3.add_line(15, "\n\tThe last one is better");
+                music3.add_line(19, "\n\tThe last one is better");
+                music3.add_line(3, "\n\tThe last one is better");
+                
+                music3.add_line(3, "\n\tI crash out, like, 'Fuck rap,  this Melle Mel if I had to (he was once a thug, he was, he -)");
+
+                System.out.println("music3:");
+                System.out.println(music3.toString());
+
+                System.out.print("Top 3 more frequent lines:");
+                String[] aux = music3.most_used_letters();
+                for (String item: aux) {
+                    System.out.print(item);
+                }
+                System.out.println();
+
+                break;
+            case 4:
+                break;
+            case 5:
+                break;
+            case 6:
+                break;
+            case 7:
+                break;
+            case 8:
+                break;
+            case 9:
+                break;
+            case 10:
                 break;
             default:
                 System.out.println("Invalid choice.");
