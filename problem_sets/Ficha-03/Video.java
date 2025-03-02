@@ -136,21 +136,11 @@ public class Video {
     }
 
     /**
-     * Returns the total minutes of the video
+     * Returns the duration of the video, in minutes and seconds
      *
-     * @return minutes
-     */
-    public int get_minutes() {
-        return this.minutes;
-    }
-
-    /**
-     * Returns the remaining seconds of the video
-     *
-     * @return seconds
-     */
-    public int get_seconds() {
-        return this.seconds;
+     * @return duration of the video
+    public int get_time() {
+        return this.time;
     }
 
     /**
@@ -219,21 +209,13 @@ public class Video {
     }
 
     /**
-     * Changes the videos time, in minutes
+     * Changes the duration of the video
      *
-     * @param minutes video time
+     * @param minutes minutes
+     * @param seconds remaining seconds
      */
-    public void set_minutes(int minutes) {
-        this.minutes = minutes;
-    }
-
-    /**
-     * Changes the videos time, in seconds
-     *
-     * @param seconds videos time
-     */
-    public void set_seconds(int seconds) {
-        this.seconds = seconds;
+    public void set_time(int minutes, int seconds) {
+        this.time = minutes + ":" + seconds;
     }
 
     /**
@@ -280,8 +262,7 @@ public class Video {
         Video temp = (Video) obj;
         return this.name.equals(temp.name) && this.content.equals(temp.content)
             && this.upload_date.equals(temp.upload_date) && this.resolution == temp.resolution
-            && this.minutes == temp.minutes && this.seconds == temp.seconds
-            && this.comments.equals(temp.comments)
+            && this.time.equals(temp.time) && this.comments.equals(temp.comments)
             && this.likes == temp.likes && this.dislikes == temp.dislikes;
     }
 
@@ -302,7 +283,7 @@ public class Video {
     public String toString() {
         return "name: " + this.name + " content: " + this.content.toString() +
                " upload date: " + this.upload_date.toString() + " resolution: " + this.resolution + 
-               " duration: " + this.minutes + ":" + this.seconds + " comments: " + this.comments.toString() + 
+               " duration: " + this.time + " comments: " + this.comments.toString() + 
                " likes: " + this.likes + " dislikes: " + this.dislikes;
     }
     
