@@ -332,7 +332,89 @@ public class Phone {
     }
 
     // other methods
-    
+
+    /** Checks if there is enough space to add byte_size bytes to the phone
+     *
+     * @param byte_size size to add
+     */
+    public boolean enough_space(int byte_size) {
+        return (byte_size + this.used_space) < (this.storage_texts + this.total_storage);
+    }
+
+    /**
+     * Adds an app to the phone, if there is space
+     *
+     * @param app_name name of the app to add
+     * @param size byte size of the app
+     */
+    public void install_app(String app_name, int size) {
+        // it the phone has space
+        if (this.enough_space(size) == true) {
+            // apps count is not full
+            if (this.apps_count < this.apps_storage) {
+                this.apps[this.apps_count++] = app_name;
+                this.used_space += size;
+            }
+        }
+    }
+
+    /**
+     * Receives a message and stores it
+     *
+     * @param text received message
+     */
+    public void receive_message(String text) {
+        if (this.enough_space(1) && this.texts_count < this.storage_texts) {
+            this.texts[this.texts_count++] = text;
+            this.used_space += 1;
+        }
+    }
+
+    /**
+     * Returns the average size of an app
+     *
+     * @return average size of an app
+     */
+    public double average_app_size() {
+        return this.apps_storage / this.apps_count;
+    }
+
+    /**
+     * Determines the biggest text
+     *
+     * @return biggest text
+     */
+    public String biggest_text() {
+        int size = 0;
+        String max = "";
+        for (int i = 0; i < this.texts_count; i++) {
+            if (this.texts[i].length() > size) {
+                size = this.texts[i].length();
+                max = this.texts[i];
+            }
+        }
+
+        return max;
+    }
+
+    /** Removes one app from the Phone
+     *
+     * @param app_name name of the app to remove
+     * @param size size of the app in bytes
+     */
+    public void remove_app(String app_name, int size) {
+        int i, j, pos;
+        for (i = 0; i < this.apps_count && this.apps[i].equals(app_name); i++);
+
+        // found the app
+        if (i < this.apps_count) {
+            // pull every name one position
+            for (; i < this.apps_count; i++) {
+                this.apps[i] = this.apps[i + 1];
+            }
+        }
+    }
+
     /**
      * Compares two Phones
      *
@@ -372,5 +454,4 @@ public class Phone {
                " display: " + this.display_x + " X " + this.display_y +
                " ";
     }
-
 }
