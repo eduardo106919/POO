@@ -1,5 +1,6 @@
 
 import java.util.Arrays;
+import java.util.Scanner;
 import java.lang.Math;
 import java.time.LocalDate;
 
@@ -10,19 +11,11 @@ public class Ficha2 {
 
     /* instance variables */
 
-    private int[] values;
-
-    private LocalDate[] dates;
+    private LocalDate[] dates = new LocalDate[1];
     private int current;
 
     private int[][] students_grades = new int[5][5];
 
-    /* constructors */
-
-    public Ficha2(int[] arr) {
-        System.arraycopy(arr, 0, this.values, 0, arr.length);
-    }
-    
     /* methods */
 
     // exercise 1
@@ -33,11 +26,11 @@ public class Ficha2 {
      * @param values Array of integers
      * @return minimum value of the array
      */
-    public int minimum() {
+    public int minimum(int[] values) {
         int min_value = Integer.MAX_VALUE;
         
         // iterate over the array
-        for (int iteration: this.values) {
+        for (int iteration: values) {
             if (iteration < min_value)
                 min_value = iteration;
         }
@@ -48,22 +41,27 @@ public class Ficha2 {
     /**
      * Given two indexes, return the sub-array in between those indexes
      *
+     * @param values Array of integers
      * @param index1 Starting index
      * @param index2 Ending index
      * @return Array of integers
      */
-    public int[] range(int index1, int index2) {
+    public int[] range(int[] values, int index1, int index2) {
+        // invalid input
+        if (index1 > index2 || index2 >= values.length)
+            return null;
+
         int len = index2 - index1 + 1;
         int[] result = new int[len];
 
         for (int i = 0; i < len; i++)
-            result[i] = this.values[i + index1];
+            result[i] = values[i + index1];
 
         return result;
 
         /* ANOTHER WAY
          * 
-         * return Arrays.copyOfRange(this.values, index1, index2);
+         * return Arrays.copyOfRange(values, index1, index2);
          */
     }
 
@@ -84,8 +82,7 @@ public class Ficha2 {
                 result[current++] = val;
         }
 
-        // result may not be full
-        return result;
+        return Arrays.copyOfRange(result, 0, current);
     }
 
 
@@ -137,8 +134,9 @@ public class Ficha2 {
 
         // find the closest date
         for (LocalDate ite: this.dates) {
-            if (this.date_difference(date, ite) < max)
+            if (this.date_difference(date, ite) < max) {
                 result = ite;
+            }
         }
 
         return result;
@@ -153,7 +151,7 @@ public class Ficha2 {
         String result = "";
             
         for (int i = 0; i < this.current; i++)
-            result += this.dates[i].toString();
+            result += this.dates[i].toString() + "\n";
 
         return result;
 
@@ -201,13 +199,14 @@ public class Ficha2 {
      *
      * @param values Array
      * @param key Integer to look for
+     * @return position of key, -1 if it is not in the array
      */
     public int binary_search(int[] values, int key) {
         int left = 0, right = values.length - 1;
         int middle;
 
         while (left < right) {
-            middle = (right - left) / 2;
+            middle = (right + left) / 2;
             if (values[middle] == key)
                 return middle;
 
@@ -327,7 +326,7 @@ public class Ficha2 {
     /**
      * Determine the sum of the grades of a class
      *
-     * @param class Class
+     * @param class_index Class
      * @return sum of grades (-1 on error)
      */
     public int class_grade_sum(int class_index) {
@@ -355,7 +354,7 @@ public class Ficha2 {
 
         int average = 0;
         for (int i = 0; i < 5; i++)
-            average += this.students_grades[student][i];
+            average += this.students_grades[student - 1][i];
 
         return (float) average / 5;
     }
@@ -363,7 +362,7 @@ public class Ficha2 {
     /**
      * Determine the class average
      *
-     * @param class Index of the class
+     * @param class_index Index of the class
      * @return class average
      */
     public float class_average(int class_index) {
@@ -418,9 +417,191 @@ public class Ficha2 {
      */
     public int[] grades_above_x(int x) {
         int[] result = new int[25];
+        int curr = 0;
+
+        int i, j;
+        for (i = 0; i < 5; i++) {
+            for (j = 0; j < 5; j++) {
+                if (this.students_grades[i][j] > x)
+                    result[curr++] = this.students_grades[i][j];
+            }
+        }
+
+        return Arrays.copyOfRange(result, 0, curr - 1);
+    }
+
+    /**
+     * Turns the students grades in a String
+     *
+     * @return string with all the grades
+     */
+    public String grades_to_string() {
+        String result = "";
+
+        for (int i = 0; i < 5; i++) {
+            for (int item: this.students_grades[i])
+                result += Integer.toString(item) + " ";
+        }
 
         return result;
     }
 
+    /**
+     * Determines the index of the class with the highest average
+     *
+     * @return index of the class
+     */
+    public int highest_class_average() {
+        float max = Float.MIN_VALUE;
+        int index = 0;
 
+        for (int i = 0; i < 5; i++) {
+            if (max < this.class_average(i + 1)) {
+                max = this.class_average(i + 1);
+                index = i;
+            }
+        }
+
+        return index;
+    }
+
+
+    // exercise 6
+
+    /**
+     * Read a matrix from standard input
+     *
+     * @param lines how many lines to read
+     * @param collumns how many collumns to read
+     * @return read matrix
+     */
+    public int[][] read_matrix(int lines, int collumns) {
+        // invalid input
+        if (lines <= 0 || collumns <= 0)
+            return null;
+
+        Scanner input = new Scanner(System.in);
+        int[][] result = new int[lines][collumns];
+
+        int i, j;
+        for (i = 0; i < lines; i++)
+            for (j = 0; j < collumns; j++)
+                result[i][j] = input.nextInt();
+
+        return result;
+    }
+
+    /**
+     * Adds two matrixes
+     *
+     * @param matrix_a first matrix
+     * @param matrix_b second matrix
+     * @return result of the operation
+     */
+    public int[][] add_matrix(int[][] matrix_a, int[][] matrix_b) {
+        int lines = matrix_a.length;
+        int collumns = matrix_a[0].length;
+
+        // matrix must have the same size
+        if (lines != matrix_b.length || collumns != matrix_b[0].length)
+            return null;
+
+        int[][] result = new int[matrix_a.length][matrix_a[0].length];
+
+        int i, j;
+        for (i = 0; i < lines; i++)
+            for (j = 0; j < collumns; j++)
+                result[i][j] = matrix_a[i][j] + matrix_b[i][j];
+
+        return result;
+    }
+
+    /**
+     * Checks if two matrixes are equal
+     *
+     * @param matrix_a first matrix
+     * @param matrix_b second matrix
+     * @return true if they are equal, otherwise, false
+     */
+    public boolean matrix_equals(int[][] matrix_a, int[][] matrix_b) {
+        int lines = matrix_a.length;
+        int collumns = matrix_a[0].length;
+
+        // matrix must have the same size
+        if (lines != matrix_b.length || collumns != matrix_b[0].length)
+            return false;
+
+        boolean result = true;
+        int i, j;
+        for (i = 0; i < lines && result; i++)
+            for (j = 0; j < collumns && result; j++)
+                if (matrix_a[i][j] != matrix_b[i][j])
+                    result = false;
+        
+        return result;
+    }
+
+    /**
+     * Determines the opposite matrix
+     *
+     * @param matrix Reference matrix
+     * @return opposite matrix
+     */
+    public int[][] opposite_matrix(int[][] matrix) {
+        int lines = matrix.length;
+        int collumns = matrix[0].length;
+
+        int[][] opposite = new int[lines][collumns];
+
+        int i, j;
+        for (i = 0; i < lines; i++)
+            for (j = 0; j < collumns; j++)
+                opposite[i][j] = - matrix[i][j];
+
+        return opposite;
+    }
+
+
+    // exercise 7
+
+    /**
+     * Simulates eurojackpot
+     *
+     * @param numbers 5 numbers between 1 and 50
+     * @param stars 2 numbers between 1 and 9
+     * @param player_nums 5 numbers chosen by the player
+     * @param player_stars 2 stars chosen by the player
+     */
+    public void eurojackpot(int[] numbers, int[] stars, int[] player_nums, int player_stars[]) {
+        int[] common_numbers = this.intersect(numbers, player_nums);
+        int[] common_stars = this.intersect(stars, player_stars);
+
+        int spaces = 0, j;
+
+        // hit the jackpot
+        if (common_numbers.equals(numbers) == true && common_stars.equals(stars) == true) {
+            for (int i = 0; i < 50; i++) {
+                for (j = 0; j < spaces; j++)
+                    System.out.print(" ");
+
+                spaces += 2;
+
+                System.out.print("Numbers:");
+                for (int item: numbers)
+                    System.out.print(" " + Integer.toString(item));
+
+                System.out.print("Stars:");
+                for (int item: stars)
+                    System.out.print(" " + Integer.toString(item));
+            }
+        } else {
+            System.out.print("Numbers:");
+            for (int item: common_numbers)
+                System.out.print(" " + Integer.toString(item));
+
+            System.out.print("Stars:");
+            for (int item: common_stars)
+                System.out.print(" " + Integer.toString(item));
+        }
+    }
 }
