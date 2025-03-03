@@ -2,7 +2,6 @@ import java.util.Random;
 import java.util.Scanner;
 import java.time.LocalDate;
 
-
 /**
  * Class to test the methods of Ficha 2
  */
@@ -86,9 +85,21 @@ public class Teste_Ficha2 {
                 break;
             // exercise 3
             case 3:
+                int[] ex3 = get_array();
+                show_array(ex3);
+
+                fc2.sort(ex3);
+                show_array(ex3);
+
+                System.out.print("Select a value to search: ");
+                int searching = input.nextInt();
+                System.out.println("index: " + fc2.binary_search(ex3, searching));
+
                 break;
             // exercise 4
             case 4:
+                
+
                 break;
             // exercise 5
             case 5:

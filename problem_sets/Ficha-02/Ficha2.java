@@ -184,9 +184,9 @@ public class Ficha2 {
      */
     public void sort(int[] values) {
         for (int i = 0; i < values.length - 1; i++) {
-            for (int j = i + 1; j < values.length; j++) {
-                if (values[j] < values[j - 1])
-                    swap(values, j, j - 1);
+            for (int j = 0; j < values.length - i - 1; j++) {
+                if (values[j] > values[j + 1])
+                    swap(values, j, j + 1);
             }
         }
 
@@ -205,7 +205,7 @@ public class Ficha2 {
         int left = 0, right = values.length - 1;
         int middle;
 
-        while (left < right) {
+        while (left <= right) {
             middle = (right + left) / 2;
             if (values[middle] == key)
                 return middle;
