@@ -55,6 +55,8 @@ public class Order {
         this.adress = adress;
         this.order_number = order_number;
         this.date = date;
+        
+        // check if orders is not null !!!!
         this.orders = new Order_Line[orders.length];
 
         for (int i = 0; i < orders_count; i++) {
@@ -130,7 +132,11 @@ public class Order {
         return this.date;
     }
 
-
+    /**
+     * Returns the Order Lines in the Order
+     *
+     * @return order lines
+     */
     public Order_Line[] get_orders() {
         Order_Line[] result = new Order_Line[this.orders_count];
 
@@ -201,6 +207,95 @@ public class Order {
     }
 
     // other methods
+
+    /**
+     * Calculates the total value of the Order
+     *
+     * @return total value
+     */
+    public double total_value() {
+        double total = 0;
+
+        for (int i = 0; i < this.orders_count; i++) {
+            total += this.orders[i].order_line_value();
+        }
+
+        return total;
+    }
+
+    /**
+     * Determines the amount of products ordered
+     *
+     * @return number of products ordered
+     */
+    public int products_to_receive() {
+        return this.orders_count;
+    }
+
+    /** Checks if a product is being ordered
+     *
+     * @param reference product reference
+     * @return true if the product is ordered
+     */
+    public boolean products_is_ordered(String reference) {
+        boolean result = false;
+
+        for (int i = 0; i < this.orders_count && result == false; i++) {
+            result = reference.equals(this.orders[i].get_reference());
+        }
+
+        return result;
+    }
+
+    /**
+     * Adds an Order Line to the Order
+     *
+     * @param line order line to add
+     */
+    public void add_order_line(Order_Line line) {
+        if (line != null) {
+            if (this.orders == null) {
+                // array is not initialized
+                this.orders = new Order_Line[10];
+                this.orders_count = 0;
+            } else if (this.orders_count == this.orders.length) {
+                // array is full
+                Order_Line[] temp = new Order_Line[this.orders_count * 2];
+                for (int i = 0; i < this.orders_count; i++) {
+                    temp[i] = this.orders[i];
+                }
+
+                this.orders = temp;
+            }
+        
+            this.orders[this.orders_count++] = line.clone();
+        }
+    }
+
+    /**
+     * Removes an order line of a given product
+     *
+     * @param reference product reference
+     */
+    public void remove_product(String reference) {
+        if (this.orders != null) {
+            int i = 0;
+            boolean found = false;
+
+            // search for the product
+            for (i = 0; i < this.orders_count && found == false; i++) {
+                found = reference.equals(this.orders[i].get_reference());
+            }
+
+            // found the product
+            if (found == true) {
+                // pull all the elements one position
+                for (; i < this.orders_count - 1 ; i++) {
+                    this.orders[i] = this.orders[i + 1];
+                }
+            }
+        }
+    }
 
     /**
      * Checks if two objects are equal
