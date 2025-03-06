@@ -1,4 +1,3 @@
-import java.util.TreeMap;
 
 /**
  * Class that represents a order line for a single product
@@ -38,7 +37,7 @@ public class Order_Line {
      *
      * @param reference Product identifier/reference
      * @param description Product description
-     * @param privce Product price before taxes
+     * @param price Product price before taxes
      * @param quantity Amount of product to order
      * @param taxes tax percentage
      * @param comercial_discount discount to aply to the price before taxes

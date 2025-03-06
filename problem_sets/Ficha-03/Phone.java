@@ -336,6 +336,7 @@ public class Phone {
     /** Checks if there is enough space to add byte_size bytes to the phone
      *
      * @param byte_size size to add
+     * @return true if there is enough space
      */
     public boolean enough_space(int byte_size) {
         return (byte_size + this.used_space) < (this.storage_texts + this.total_storage);

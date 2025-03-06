@@ -139,6 +139,7 @@ public class Video {
      * Returns the duration of the video, in minutes and seconds
      *
      * @return duration of the video
+     */
     public int get_time() {
         return this.time;
     }

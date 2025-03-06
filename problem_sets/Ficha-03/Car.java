@@ -81,7 +81,7 @@ public class Car {
     /**
      * Copy constructor
      *
-     * @oaram another car
+     * @param other car
      */
     public Car(Car other) {
         this.status = other.status;

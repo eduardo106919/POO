@@ -66,6 +66,11 @@ public class Order {
         this.orders_count = orders_count;
     }
 
+    /**
+     * Creates an Order through another Order
+     *
+     * @param other another Order
+     */
     public Order(Order other) {
         this.client_name = other.client_name;
         this.NIF = other.NIF;
