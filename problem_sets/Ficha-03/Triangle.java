@@ -1,3 +1,4 @@
+import java.util.Arrays;
 
 /**
  * Class to represent a Triangle
@@ -119,6 +120,43 @@ public class Triangle {
     }
 
     // other methods
+
+    /**
+     * Calculates the area of a Triangle
+     *
+     * @return area of the Triangle
+     */
+    public double area() {
+        // no garanty it is rectangle
+        double side1 = this.dot1.distancia(this.dot2);
+    
+        return side1 * this.height();
+    }
+
+    /**
+     * Determines the perimeter of the Triangle
+     *
+     * @return perimeter
+     */
+    public double perimeter() {
+        return this.dot1.distancia(this.dot2) + this.dot2.distancia(this.dot3) + this.dot3.distancia(this.dot1);
+    }
+
+    /**
+     * Calculates the height of a Triangle
+     *
+     * @return height of the Triangle
+     */
+    public double height() {
+        int[] ys = new int[3];
+        ys[0] = this.dot1.getY();
+        ys[1] = this.dot2.getY();
+        ys[2] = this.dot3.getY();
+
+        Arrays.sort(ys);
+
+        return ys[2] - ys[0];
+    }
 
     /**
      * Checks if other is equal to the calling Triangle
