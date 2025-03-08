@@ -102,7 +102,6 @@ public class Car {
      * Instance Methods
      */
 
-
     // getters
 
     /**
@@ -284,6 +283,59 @@ public class Car {
     }
 
     // other methods
+
+    /**
+     * Turns the car engine on
+     */
+    public void turn_engine_on() {
+        this.status = true;
+        this.parcial_kms = 0;
+        this.parcial_avg_consumption = 0;
+    }
+
+    /**
+     * Turns the car engine off
+     */
+    public void turn_engine_off() {
+        this.status = false;
+    }
+    
+    /**
+     * Resets the car counters for the last trip
+     */
+    public void reset_last_trip() {
+        this.parcial_kms = 0;
+        this.parcial_avg_consumption = 0;
+    }
+
+    /**
+     * Rides the car foward
+     *
+     * @param distance distance in meters
+     * @param speed speed
+     */
+    public void ride(double distance, double speed) {
+        // if the car engine is on
+        if (this.status == true) {
+            this.total_kms += distance;
+            this.parcial_kms += distance;
+
+            // make the calculations for the fuel consumptio
+        }
+    }
+
+    /**
+     * Brakes the car for a certain distance
+     *
+     * @param distance distance
+     */
+    public void brake(double distance) {
+        // if the car engine is on
+        if (this.status == true) {
+            this.parcial_kms += distance;
+            this.total_kms += distance;
+        }
+    }
 
     /**
      * Compares two obj to the calling Car
