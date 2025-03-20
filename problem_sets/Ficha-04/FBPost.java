@@ -173,6 +173,22 @@ public class FBPost {
     // outros métodos
 
     /**
+     * Adiciona um like ao post
+     */
+    public void like() {
+        this.likes++;
+    }
+
+    /**
+     * Adiciona um comentario ao post
+     *
+     * @param comentario comentario a adicionar
+     */
+    public void adiciona_comentario(String comentario) {
+        this.comentarios.add(comentario);
+    }
+
+    /**
      * Compara dois objetos
      *
      * @param o objeto a comparar
