@@ -1,106 +1,120 @@
 
 /**
- * Class that represents the pressure in a certain room
+ * Deteta a pressão de uma divisão de uma casa
  */
 public class Sensor {
 
     /**
-     * Instance variables
+     * Variáveis de Instância
      */
 
-    private double pressure;
+    private double pressao;
 
 
     /**
-     * Constructors
+     * Construtores
      */
 
     /**
-     * Constructor for an empty Sensor
+     * Construtor por omissão de uma Sensor
      */
     public Sensor() {
-        this.pressure = 0;
+        this.pressao = 0;
     }
 
     /**
-     * Constructor for a Sensor, with parameters
+     * Construtor parametrizado de um Sensor
+     * A pressao deve ser não negativa
      *
-     * @param value Initial pressure
+     * @param pressao pressao da divisao
      */
-    public Sensor(double value) {
-        if (value < 0)
-            this.pressure = 0;
-        else
-            this.pressure = value;
+    public Sensor(double pressao) {
+        this.pressao = 0;
+
+        // pressao tem de ser positiva
+        if (pressao > 0) {
+            this.pressao = pressao;
+        }
     }
 
     /**
-     * Clone constructor
+     * Construtor de cópia de um Sensor
+     * Sensor passado tem de ser não nulo
      *
-     * @param other Another Sensor
+     * @param outro Sensor a copiar
      */
-    public Sensor(Sensor other) {
-        this.pressure = other.get_pressure();
-    }
+    public Sensor(Sensor outro) {
+        this.pressao = 0;
 
-
-    /**
-     * Instance Methods
-     */
-
-    /**
-     * Returns the room pressure
-     *
-     * @return value of the pressure
-     */
-    public double get_pressure() {
-        return this.pressure;
+        if (outro != null) {
+            this.pressao = outro.pressao;
+        }
     }
 
     /**
-     * Changes the value of the room pressure
-     *
-     * @param value new room pressure value
-     * @return true if the value is positive
+     * Métodos de Instância
      */
-    public boolean set_pressure(double value) {
-        if (value < 0)
-            return false;
 
-        this.pressure = value;
-        return true;
+    // getters
+    
+    /**
+     * Devolve a pressão da divisão
+     *
+     * @return pressão da divisão
+     */
+    public double get_pressao() {
+        return this.pressao;
     }
 
+    // setters
+    
     /**
-     * Compares a Sensor with an object
-     *
-     * @param obj Object to compare
-     * @return true if the objects are equal
+     * Altera a pressão de uma divisão
+     * Valor deve ser não negativo
+     * 
+     * @param valor pressão da divisão
+     * @return true se o valor passado for válido
      */
-    public boolean equals(Object obj) {
-        if (this == obj)
+    public boolean set_pressao(double valor) {
+        if (valor >= 0) {
+            this.pressao = valor;
+        }
+
+        return valor >= 0;
+    }
+
+    // outros métodos
+
+    /**
+     * Compara dois Sensores
+     *
+     * @param outro objeto a comparar
+     * @return true se forem iguais
+     */
+    public boolean equals(Object outro) {
+        if (this == outro)
             return true;
-        if (obj == null || obj.getClass() != this.getClass())
+        if (outro == null || this.getClass() != outro.getClass())
             return false;
-        Sensor temp = (Sensor) obj;
-        return this.pressure == temp.get_pressure();
+        Sensor temp = (Sensor) outro;
+        return this.pressao == temp.pressao;
     }
 
     /**
-     * Creates a clone of the Sensor
+     * Devolve a representacao em String de um Sensor
      *
-     * @return cloned Sensor
+     * @return String com a informacao de um Sensor
+     */
+    public String toString() {
+        return "pressão: " + this.pressao;
+    }
+
+    /**
+     * Efetua uma cópia do objeto receptor da mensagem
+     *
+     * @return cópia do objeto
      */
     public Sensor clone() {
         return new Sensor(this);
-    }
-
-    /**
-     * Turns a Sensor into a String
-     *
-     * @return String with a Sensor information
-     */
-    public String toString() {
-        return "pressure: " + this.pressure;
     }
 }
