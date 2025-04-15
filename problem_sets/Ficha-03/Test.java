@@ -174,10 +174,44 @@ public class Test {
                     System.out.println(item);
                 }
 
+                break;
 
-                
+            case 4:
+                System.out.println("\n---------- Telemóvel ----------");
+            
+                Telemovel tele1 = new Telemovel();
+                Telemovel tele2 = new Telemovel("Iphone", "14", 2532, 1170, 2000);
+                Telemovel tele3 = new Telemovel(tele2);
 
+                System.out.println(tele2.toString());
 
+                tele2.instalaApp("Instagram", 500);
+                tele2.instalaApp("Youtube", 1000);
+                tele2.instalaApp("Twitter", 200);
+
+                tele2.recebeMsg("ola pessoal");
+                tele2.recebeMsg("logo é praça, beber finos, mandar linhas");
+                tele2.recebeMsg("o futuro nao interessa");
+                tele2.recebeMsg("o que interessa é o que ta frente");
+                tele2.recebeMsg("adeus pessoal");
+
+                System.out.println("Mair msg: " + tele2.maiorMsg());
+                System.out.println("Tamanho medio: " + tele2.tamMedioApps());
+
+                System.out.println("Apps:");
+                String[] apps = tele2.get_apps();
+                for (String item : apps) {
+                    System.out.println(item);
+                }
+
+                System.out.println("A remover Instagram...");
+                tele2.removeApp("Instagram", 500);
+
+                System.out.println("Apps:");
+                apps = tele2.get_apps();
+                for (String item : apps) {
+                    System.out.println(item);
+                }
 
                 break;
             default:
