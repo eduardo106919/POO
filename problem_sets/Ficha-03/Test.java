@@ -1,225 +1,190 @@
-
 import java.util.Scanner;
-import java.util.Random;
+
+
 
 /**
- * Class to test the exercises of Ficha 3
+ * Classe de teste das classes da Ficha 3
  */
 public class Test {
 
     /**
-     * Main program
+     * Programa principal
      *
-     * @param args Command line arguments
+     * @param args argumentos passados pela linha de comandos
      */
     public static void main(String[] args) {
-
         Scanner input = new Scanner(System.in);
-        Random rand = new Random();
-
-        System.out.println("Chose a class to test:");
-        System.out.println(" 1 - Circle");
+        System.out.println("Escolhe uma classe a testar:");
+        System.out.println(" 1 - Circulo");
         System.out.println(" 2 - Sensor");
-        System.out.println(" 3 - Song");
-        System.out.println(" 4 - Mobile Phone");
-        System.out.println(" 5 - Youtube Video");
-        System.out.println(" 6 - Light Bulb");
-        System.out.println(" 7 - Football Game");
-        System.out.println(" 8 - Car");
-        System.out.println(" 9 - Order Line");
-        System.out.println("10 - Order");
+        System.out.println(" 3 - Música");
+        System.out.println(" 4 - Telemóvel");
+        System.out.println(" 5 - Video de Youtube");
+        System.out.println(" 6 - Lâmpada");
+        System.out.println(" 7 - Jogo de Futebol");
+        System.out.println(" 8 - Carro");
+        System.out.println(" 9 - Linha de Encomenda");
+        System.out.println("10 - Encomenda");
+        System.out.println("11 - Triângulo");
 
-        System.out.print("choice (1..10) : ");
+        System.out.print("class: ");
         int choice = input.nextInt();
-        System.out.println("-------------------------------");
 
         switch (choice) {
             case 1:
-                // Circle
-                System.out.println("Class -> Circle");
+                System.out.println("\n---------- Circulo ----------");
+                Circulo circ1 = new Circulo();
+                Circulo circ2 = new Circulo(5, 6, 9);
+                Circulo circ3 = new Circulo(circ2);
 
-                Circle circle1 = new Circle();
-                // Circle stores floats, but for simplicity, I will use integers
-                Circle circle2 = new Circle(rand.nextInt() % 10, rand.nextInt() % 10, rand.nextInt() % 20);
-                Circle circle3 = new Circle(circle2);
-
-                System.out.println("circle1:");
-                System.out.println(circle1.toString());
-
-                System.out.println("circle2:");
-                System.out.println(circle2.toString());
-
-                System.out.println("circle3:");
-                System.out.println(circle3.toString());
-
-                System.out.println("testing setters");
-                circle1.set_x(15);
-                circle1.set_y(-5);
-                circle1.set_radius(6);
-                System.out.println("circle1:");
-                System.out.println(circle1.toString());
+                System.out.println("circulo 1:\n" + circ1.toString());
+                System.out.println("\ncirculo 2:\n" + circ2.toString());
+                System.out.println("\ncirculo 3:\n" + circ3.toString());
                 
-                System.out.println("testing getters");
-                System.out.println("circle2:");
-                System.out.println("x: " + circle2.get_x() + " y: " + circle2.get_y() + " radius: " + circle2.get_radius());
-                
-                System.out.println("area of circle 3: " + circle3.calculate_area());
-                System.out.println("perimeter of circle 3: " + circle3.calculate_perimeter());
-                
-                System.out.println("Cloning circle1");
-                System.out.println("circle4:");
-                Circle circle4 = circle1.clone();
-                System.out.println(circle4.toString());
+                System.out.println("\nx de circulo 1: " + circ1.get_x());
+                System.out.println("y de circulo 2: " + circ2.get_y());
+                System.out.println("raio de circulo 3: " + circ3.get_raio());
 
-                System.out.println("circle1 is equal to circle3: " + circle1.equals(circle3));
-                System.out.println("circle1 is equal to circle4: " + circle1.equals(circle4));
+                System.out.println("\nA alterar circulo 1...");
+                circ1.set_x(9);
+                circ1.set_y(-3);
+                circ1.set_raio(5);
+                System.out.println("circulo 1:\n" + circ1.toString());
+
+                System.out.println("\nA alterar centro do circulo 3...");
+                circ3.altera_centro(-6, 3);
+                System.out.println("circulo 3:\n" + circ3.toString());
+
+                System.out.println("\nA calcular àrea e perimetro do circulo 2...");
+                System.out.println("àrea: " + circ2.calcula_area() + "\nperimetro: " + circ2.calcula_perimetro());
+                
+                Circulo circ4 = circ3.clone();
+                System.out.println("\ncirculo 4:\n" + circ4.toString());
+
+                System.out.println("\ncirculo 3 == circulo 4: " + circ3.equals(circ4));
+                System.out.println("circulo 1 == circulo 2: " + circ1.equals(circ2));
 
                 break;
+
             case 2:
-                // Sensor
-                System.out.println("Class -> Sensor");
+                System.out.println("\n---------- Sensor ----------");
 
-                Sensor sensor1 = new Sensor();
-                // Sensor stores floats, but for simplicity, I will use integers
-                Sensor sensor2 = new Sensor(rand.nextInt() % 100);
-                Sensor sensor3 = new Sensor(sensor2);
+                Sensor sens1 = new Sensor();
+                Sensor sens2 = new Sensor(45);
+                Sensor sens3 = new Sensor(sens2);
 
-                System.out.println("sensor1:");
-                System.out.println(sensor1.toString());
+                System.out.println("sensor 1 | " + sens1.toString());
+                System.out.println("sensor 2 | " + sens2.toString());
+                System.out.println("sensor 3 | " + sens3.toString());
 
-                System.out.println("sensor2:");
-                System.out.println(sensor2.toString());
+                System.out.println("\npressao do sensor 2: " + sens2.get_pressao());
 
-                System.out.println("sensor3:");
-                System.out.println(sensor3.toString());
-
-                System.out.println("Cloning sensor2:");
-                System.out.println("sensor4:");
-                Sensor sensor4 = sensor2.clone();
-                System.out.println(sensor4.toString());
-
-                System.out.println("sensor1 is equal to sensor2: " + sensor1.equals(sensor2));
-                System.out.println("sensor2 is equal to sensor3: " + sensor2.equals(sensor3));
-
-                System.out.println("testing setters\nsetting pressure to " + 50);
-                boolean result = sensor1.set_pressure(50.0);
-                System.out.println("result: " + result);
-
-                System.out.println("sensor1:");
-                System.out.println(sensor1.toString());
-                
-                System.out.println("setting pressure to " + -10);
-                result = sensor1.set_pressure(-10);
-                System.out.println("result: " + result);
-
-                System.out.println("sensor1:");
-                System.out.println(sensor1.toString());
-                
-                System.out.println("testing getters");
-                System.out.println("pressure on sensor3: " + sensor3.get_pressure());
-
-                break;
-            case 3:
-                // Song
-                System.out.println("Class -> Song");
-
-                Song music1 = new Song();
-                String[] lyrics = {"\n\tThese niggas talkin' out of they necks",
-                                   "\n\tDon't pull no coffin out of your mouth",
-                                   "\n\tI'm way too paranoid for a threat",
-                                   "\n\tAyy-ayy, let's get it, bro",
-                                   "\n\tD-O-T, the money, power, respect",
-                                   "\n\tThe last one is better",
-                                   "\n\tSay, it's a lot of goofies with a check",
-                                   "\n\tI mean, ah, I hope them sentiments symbolic",
-                                   "\n\tAh, my temperament bipolar, I choose violence",
-                                   "\n\tOkay, let's get it up, it's time for him to prove that he's a problem",
-                                   "\n\tNiggas clickin' up, but cannot be legit, no 40 water, tell 'em",
-                                   "\n\tAh, yeah, huh, yeah, get up with me (he was once a thug, he was, he -)",
-                                   "\n\tFuck sneak dissin', first person shooter (he was once a thug, he was, he -)",
-                                   "\n\tI hope they came with three switches (he was once a thug, he was, he -)",
-                                   "\n\tI crash out, like, 'Fuck rap,  this Melle Mel if I had to (he was once a thug, he was, he -)",
-                                   "\n\tGot two T's with me, I'm snatchin' chains and burnin' tattoos",
-                                   "\n\tIt's up, lost too many soldiers not to play it safe",
-                                   "\n\tIf he walk around with that stick, it ain't Andre 3K",
-                                   "\n\tThink I won't drop the location? I still got PTSD",
-                                   "\n\tMotherfuck the big three, nigga, it's just big me"};
-                String[] notes = {"\n\tlalalal", "\n\tlalalala", "\n\tdjfskd"};
-                Song music2 = new Song("Like that", "Future K Dot", "Metro Boomin", "Young Metro", lyrics, notes, 268, 695586936);
-                Song music3 = new Song(music2);
-
-                System.out.println("music1:");
-                System.out.println(music1.toString());
-
-                System.out.println("\nmusic2:");
-                System.out.println(music2.toString());
-
-                System.out.println("\nmusic3:");
-                System.out.println(music3.toString());
-
-                System.out.println("\ntesting getters and setters");
-                music1.set_name(music2.get_name());
-                music1.set_interpreter(music2.get_interpreter());
-                music1.set_author(music2.get_author());
-                music1.set_editor_name(music2.get_editor_name());
-                music1.set_lyrics(music2.get_lyrics());
-                music1.set_notes(music2.get_notes());
-                music1.set_duration(music2.get_duration());
-                music1.set_streams(music2.get_streams());
-                
-                System.out.println("music1:");
-                System.out.println(music1.toString());
-
-                System.out.println("music1 is equal to music3: " + music1.equals(music3));
-                System.out.println("\nchanging music2 name and author:");
-                music2.set_name("Not like us");
-                music2.set_author("Kendrick Lamar");
-
-                System.out.println("music2:");
-                System.out.println(music2.toString());
-
-                System.out.println("How many lines do the music3 lyrics have: " + music3.lyrics_lines_count());
-                System.out.println("How many characters dot the music3 lyrics have: " + music3.total_lyrics_chars());
-                System.out.println("Longest line in music3: " + music3.longest_line());
-
-                System.out.println("adding: The last one is better");
-                music3.add_line(15, "\n\tThe last one is better");
-                music3.add_line(19, "\n\tThe last one is better");
-                music3.add_line(3, "\n\tThe last one is better");
-                
-                music3.add_line(3, "\n\tI crash out, like, 'Fuck rap,  this Melle Mel if I had to (he was once a thug, he was, he -)");
-
-                System.out.println("music3:");
-                System.out.println(music3.toString());
-
-                System.out.print("Top 3 more frequent lines:");
-                String[] aux = music3.most_used_letters();
-                for (String item: aux) {
-                    System.out.print(item);
+                System.out.println("\nA alterar pressao do sensor 1 e 3...");
+                if (sens3.set_pressao(-10) == false) {
+                    System.out.println("Não foi possível alterar a pressão do sensor 3 para -10");
                 }
-                System.out.println();
+
+                sens1.set_pressao(78);
+                System.out.println("sensor 1 | " + sens1.toString());
+                System.out.println("sensor 3 | " + sens3.toString());
+
+                Sensor sens4 = sens1.clone();
+                System.out.println("\nsensor 4 | " + sens4.toString());
+                System.out.println("\nsensor 1 == sensor 4 : " + sens1.equals(sens4));
+                System.out.println("sensor 1 == sensor 3 : " + sens1.equals(sens3));
 
                 break;
-            case 4:
-                break;
-            case 5:
-                break;
-            case 6:
-                break;
-            case 7:
-                break;
-            case 8:
-                break;
-            case 9:
-                break;
-            case 10:
+
+            case 3:
+                System.out.println("\n---------- Música ----------");
+
+                String[] earfquakeLyrics = {
+                	"\tFor real, for real this time",
+                	"\tFor real, for real, for real this time",
+                	"\tBitch, I cannot fall short",
+                	"\tFor real, for real, for real this time (yeah yeah)",
+                	"\tFor real, for real, for real this time",
+                	"\t'Cause you make my earth quake",
+                	"\tOh, you make my earth quake",
+                	"\tRiding around, your love is shakin' me up and it's making my heart break",
+                	"\t'Cause you make my earth quake (earth quake, ooh)",
+                	"\tOh, you make my earth quake",
+                	"\tRiding around, your love is shakin' me up and it's making my heart break",
+                	"\tDon't leave, it's my fault",
+                	"\tDon't leave, it's my fault",
+                	"\tDon't leave, it's my fault (yeah)",
+                	"\t'Cause when it all comes crashing down I'll need you",
+                	"\t'Cause you make my earth quake",
+                	"\tOh, you make my earth quake",
+                	"\tRiding around, you tell me something, baby, and it's making my heart break",
+                	"\t'Cause you make my earth quake",
+                	"\tOh, you make my earth quake (earth quake, yeah)",
+                	"\tRiding around, your love is shakin' me up and it's making my heart break (you already know)",
+                	"\tWe ain't gotta ball, D.Rose, huh",
+                	"\tDon't give a fuck 'bout nun', huh",
+                	"\tBeamin' like fuck my lungs, huh",
+                	"\tJust might call my lawyer, huh",
+                	"\tPlug gon' set me up, huh",
+                	"\tBih, don't set me up, fuck that",
+                	"\tI'm with Tyler, yuh (slime)",
+                	"\tHe ride like the car, huh",
+                	"\tAnd she wicked, huh, yuh",
+                	"\tLike Woah Vicky, huh, yeah (like Woah Vicky)",
+                	"\tOh my God, hold up, um",
+                	"\tThese diamonds not Tiffany, huh, yeah",
+                	"\tSo in love",
+                	"\tSo in love",
+                	"\tDon't leave, it's my fault (fault)",
+                	"\tDon't leave, it's my fault",
+                	"\tDon't leave, it's my fault",
+                	"\t'Cause when it all comes crashing down I'll need you",
+                	"\t'cause you make my earth quake",
+                	"\tI don't want no confrontation, no",
+                	"\tYou don't want my conversation (I don't want no conversation)",
+                	"\tI just need some confirmation on how you feel, for real (for real)",
+                	"\t(Ay) you don't want no complication, no",
+                	"\tI don't want no sovereign nation (I don't want no sovereign nation)",
+                	"\tI don't even know 'bout that 'cause I'm for real (for real)",
+                	"\tI said don't leave, it's my fault (one)",
+                	"\tI said don't leave, it's my fault (two, two)",
+                	"\tDon't leave, its, it's my fault girl (three, three, three)",
+                	"\tDon't, do-do-do-do-do, I need"
+                };
+
+                String[] notes = {"do re mi", "fa si", "do re mi fa si sol"};
+                Musica m1 = new Musica();
+                Musica m2 = new Musica("EARFQUAKE", "Tyler and Carti", "Tyler, the Creator", "Earfquake publisher", earfquakeLyrics, notes, 190);
+                Musica m3 = new Musica(m2);
+
+                System.out.println(m2.toString());
+
+                System.out.println("m2 == m3: " + m2.equals(m3));
+                System.out.println("m2 == m1: " + m2.equals(m1));
+
+                System.out.println("qtsLinhasPoema: " + (m2.qtsLinhasPoema() == earfquakeLyrics.length));
+                System.out.println("numeroCaracteres: " + m2.numeroCarateres());
+
+                m2.addLetra(10, earfquakeLyrics[0]);
+                System.out.println(m2.toString());
+
+                System.out.println("linha mais longa: " + m2.linhaMaisLonga());
+
+                String[] more3 = m2.letrasMaisUtilizadas();
+                for (String item : more3) {
+                    System.out.println(item);
+                }
+
+
+                
+
+
+
                 break;
             default:
-                System.out.println("Invalid choice.");
+                System.out.println("Valor Inválido!!");
                 break;
         }
 
         input.close();
-
     }
 }
