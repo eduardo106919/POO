@@ -27,11 +27,6 @@
  
 public class Lampada
 {
-    public enum Modo {
-        ON,
-        OFF,
-        ECO
-    }
 
     private Modo modo;
 
