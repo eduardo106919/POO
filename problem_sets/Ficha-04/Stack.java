@@ -1,108 +1,133 @@
 
 import java.util.ArrayList;
+import java.util.List;
 
-/**
- * Class to represent a Stack
- */
+
 public class Stack {
 
     /**
-     * Instance Variables
+     * Variáveis de Instância
      */
 
-    private static int initial_capacity = 10;
-    private int size;
-    private ArrayList<String> storage;
+    ArrayList<String> stack;
 
     /**
-     * Constructors
+     * Construtores
      */
-    
+
     /**
-     * Initializes an empty Stack, of size 10
+     * Construtor por omissão de uma Stack
      */
     public Stack() {
-        this.size = Stack.initial_capacity;
-        this.storage = new ArrayList<String>(Stack.initial_capacity);
+        this.stack = new ArrayList<String>();
     }
 
     /**
-     * Initializes a Stack, with the given size
+     * Construtor de cópia de uma Stack
      *
-     * @param size initial size
+     * @param outro stack a copiar
      */
-    public Stack(int size) {
-        this.size = size;
-        this.storage = new ArrayList<String>(size);
+    public Stack(Stack outro) {
+        if (outro != null) {
+            this.stack = new ArrayList<String>(outro.stack);
+        } else {
+            this.stack = new ArrayList<String>();
+        }
     }
 
     /**
-     * Initializes a Stack, with another Stack
-     *
-     * @param other another stack
+     * Métodos de Instância
      */
-    public Stack(Stack other) {
-        this.size = other.size;
-        // strings are imutable, so shallow clone is safe
-        this.storage = (ArrayList<String>) other.storage.clone();
+
+    // getters
+
+    /**
+     * Devolve as strings guardadas na stack
+     *
+     * @return strings guardadas
+     */
+    public List<String> get_data() {
+        // shallow clone em strings não é problema
+        return new ArrayList<String>(this.stack);
     }
 
+    // outros métodos
 
     /**
-     * Instance Methods
-     */
-
-    /**
-     * Determines the element on the top of the Stack
+     * Devolve a string que está no topo da stack
      *
-     * @return top of the Stack
+     * @return topo do stack
      */
     public String top() {
-        if (this.storage.isEmpty())
-            return null;
-        else
-            return (String) this.storage.getLast();
+        return this.stack.getLast();
     }
 
     /**
-     * Adds str to the top of the Stack
+     * Adiciona a string ao topo da stack
      *
-     * @param str String to add
+     * @param s string a adicionar
      */
-    public void push(String str) {
-        // stack is full
-        if (this.storage.size() == this.size) {
-            this.size *= 2;
-            this.storage.ensureCapacity(this.size);
-        }
-
-        this.storage.addLast(str);
+    public void push(String s) {
+        this.stack.addLast(s);
     }
 
     /**
-     * Removes the top element on the stack, if it's not empty
+     * Remove o elemento no topo da stack, se esta não estiver vazia
      */
     public void pop() {
-        if (this.storage.isEmpty() == false) {
-            this.storage.removeLast();
+        if (this.stack.isEmpty() == false) {
+            this.stack.removeLast();
         }
     }
 
     /**
-     * Checks whether if the stack is empty
+     * Determina se a stack está vazia ou não
      *
-     * @return true if the stack is empty
+     * @return true se estiver vazia
      */
-    public boolean empty() {
-        return this.storage.isEmpty();
+    public boolean isEmpty() {
+        return this.stack.isEmpty();
     }
 
     /**
-     * Determines the length of the stack
+     * Determina o número de elementos na stack
      *
-     * @return length of the stack
+     * @return número de elementos na stack
      */
     public int length() {
-        return this.storage.size();
+        return this.stack.size();
+    }
+
+    /**
+     * Compara um objeto à stack chamadora
+     *
+     * @param o objeto a comparar
+     * @return true se forem iguais
+     */
+    public boolean equals(Object o) {
+        if (this == o)
+            return true;
+        if (o == null || this.getClass() != o.getClass())
+            return false;
+        Stack outro = (Stack) o;
+        return this.stack.equals(outro.stack);
+    }
+
+    /**
+     * Clona uma stack
+     *
+     * @return stack clonada
+     */
+    public Stack clone() {
+        return new Stack(this);
+    }
+
+    /**
+     * Transforma uma Stack numa string
+     *
+     * @return string com os elementos da stack
+     */
+    public String toString() {
+        return this.stack.toString();
     }
 }
