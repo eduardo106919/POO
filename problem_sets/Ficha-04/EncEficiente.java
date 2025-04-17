@@ -1,74 +1,71 @@
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.stream.Collectors;
 import java.util.List;
 
-/**
- * Encomenda Eficiente
- */
+
+
 public class EncEficiente {
 
     /**
      * Variáveis de Instância
      */
 
+    private static int nr_encomendas;
+
     private String cliente;
     private int NIF;
     private String morada;
-    private int numero_encomenda;
-    private LocalDate data;
-    private ArrayList<LinhaEncomenda> linhas_encomenda;
+    private int numero;
+    private LocalDateTime data;
+    private ArrayList<LinhaEncomenda> linhas;
 
-    private static int identificadores_encomenda = 0;
 
     /**
      * Construtores
      */
 
     /**
-     * Construtor por omissão de uma Encomenda Eficiente
+     * Construtor por omissão de uma EncEficiente
      */
     public EncEficiente() {
-        this.cliente = "n/a";
-        this.NIF = -1;
-        this.morada = "n/a";
-        this.numero_encomenda = EncEficiente.identificadores_encomenda++;
-        this.data = LocalDate.now();
-        this.linhas_encomenda = new ArrayList<LinhaEncomenda>();
+        this.cliente = "";
+        this.NIF = 0;
+        this.morada = "";
+        this.numero = EncEficiente.nr_encomendas++;
+        this.data = LocalDateTime.now();
+        this.linhas = new ArrayList<LinhaEncomenda>();
     }
 
     /**
-     * Construtor parametrizado de uma Encomenda Eficiente
+     * Construtor parametrizado de uma EncEficiente
      *
      * @param cliente nome do cliente
      * @param NIF numero fiscal do cliente
      * @param morada morada do cliente
+     * @param linhas colecao de linhas de encomenda
      */
-    public EncEficiente(String cliente, int NIF, String morada) {
+    public EncEficiente(String cliente, int NIF, String morada, Collection<LinhaEncomenda> linhas) {
+        this();
         this.cliente = cliente;
         this.NIF = NIF;
         this.morada = morada;
-        this.numero_encomenda = EncEficiente.identificadores_encomenda++;
-        this.data = LocalDate.now();
-        this.linhas_encomenda = new ArrayList<LinhaEncomenda>();
+        this.linhas = linhas.stream().map(LinhaEncomenda::clone).collect(Collectors.toCollection(ArrayList::new));
     }
 
     /**
-     * Construtor de cópia de uma Encomenda Eficiente
+     * Construtor de cópia para uma EncEficiente
      *
-     * @param outro encomenda a copiar
+     * @param outro EncEficiente a copiar
      */
     public EncEficiente(EncEficiente outro) {
-        if (outro != null) {
-            this.cliente = outro.cliente;
-            this.NIF = outro.NIF;
-            this.morada = outro.morada;
-            this.numero_encomenda  = outro.numero_encomenda;
-            this.data = outro.data;
-            this.linhas_encomenda = new ArrayList<LinhaEncomenda>(outro.linhas_encomenda.stream()
-                                         .map(LinhaEncomenda::clone)
-                                         .collect(Collectors.toList()));
-        }
+        this.cliente = outro.cliente;
+        this.NIF = outro.NIF;
+        this.morada = outro.morada;
+        this.numero = outro.numero;
+        this.data = outro.data;
+        this.linhas = outro.linhas.stream().map(LinhaEncomenda::clone).collect(Collectors.toCollection(ArrayList::new));
     }
 
     /**
@@ -78,16 +75,16 @@ public class EncEficiente {
     // getters
     
     /**
-     * Devolve o número total de encomendas
+     * Devolve o numero de encomendas únicas
      *
-     * @return número de encomendas
+     * @return numero de encomendas
      */
-    public static int get_identificadores_encomenda() {
-        return EncEficiente.identificadores_encomenda;
+    public static int get_nr_encomendas() {
+        return EncEficiente.nr_encomendas;
     }
 
     /**
-     * Devolve o nome do cliente que efetuou a encomenda
+     * Devolve o nome do cliente
      *
      * @return nome do cliente
      */
@@ -96,9 +93,9 @@ public class EncEficiente {
     }
 
     /**
-     * Devolve o número fiscal do cliente
+     * Devolve o numero fiscal do cliente
      *
-     * @return número fiscal
+     * @return numero fiscal
      */
     public int get_NIF() {
         return this.NIF;
@@ -114,36 +111,36 @@ public class EncEficiente {
     }
 
     /**
-     * Devolve o identificador da encomenda
+     * Devolve o numero da encomenda
      *
-     * @return numero de encomenda
+     * @return numero da encomenda
      */
-    public int get_numero_encomenda() {
-        return this.numero_encomenda;
+    public int get_numero() {
+        return this.numero;
     }
 
     /**
-     * Devolve a data na qual a encomenda foi feita
+     * Devolve a data da Encomenda
      *
-     * @return data de realização da encomenda
+     * @return data da Encomenda
      */
-    public LocalDate get_data() {
+    public LocalDateTime get_data() {
         return this.data;
     }
 
     /**
-     * Devolve a lista de Linhas de Encomendas
+     * Devolve as linhas de Encomenda
      *
-     * @return lista de linhas  de encomendas
+     * @return linhas de encomenda
      */
-    public List<LinhaEncomenda> get_linhas_encomenda() {
-        return this.linhas_encomenda.stream().map(LinhaEncomenda::clone).collect(Collectors.toList());
+    public List<LinhaEncomenda> get_linhas() {
+        return this.linhas.stream().map(LinhaEncomenda::clone).collect(Collectors.toList());
     }
 
     // setters
  
     /**
-     * Altera o nome do cliente que efetuou a encomenda
+     * Altera o nome do cliente
      *
      * @param cliente nome do cliente
      */
@@ -152,9 +149,9 @@ public class EncEficiente {
     }
 
     /**
-     * Altera o NIF do cliente
+     * Altera o numero fiscal do cliente
      *
-     * @param NIF número fiscal do cliente
+     * @param NIF numero fiscal
      */
     public void set_NIF(int NIF) {
         this.NIF = NIF;
@@ -169,106 +166,116 @@ public class EncEficiente {
         this.morada = morada;
     }
 
-    // outros métodos
-
     /**
-     * Determina o valor total da encomenda
+     * Altera as linhas de encomenda
      *
-     * @return valor total
+     * @param linhas linhas de encomenda
      */
-    public double calcula_valor_total() {
-        return this.linhas_encomenda.stream().mapToDouble(LinhaEncomenda::calculaValorLinhaEnc).sum();
+    public void set_linhas(Collection<LinhaEncomenda> linhas) {
+        this.linhas = linhas.stream().map(LinhaEncomenda::clone).collect(Collectors.toCollection(ArrayList::new));
     }
 
-    /**
-     * Determina o valor total dos descontos obtidos
-     *
-     * @return valor total dos descontos
-     */
-    public double calcula_valor_desconto() {
-        return this.linhas_encomenda.stream().mapToDouble(LinhaEncomenda::calculaValorDesconto).sum();
-    }
+    // métodos de utilidade
 
     /**
-     * Determina o número total de produtos a receber
-     *
-     * @return número de produtos a receber
-     */
-    public int numero_total_produtos() {
-        return this.linhas_encomenda.stream().mapToInt(LinhaEncomenda::getQuantidade).sum();
-    }
-
-    /**
-     * Verifica se existe algum produto com a referencia a ser encomendado
-     *
-     * @param referencia identificador do produto
-     * @return true se o produto existir
-     */
-    public boolean existe_produto(String referencia) {
-        return this.linhas_encomenda.stream().anyMatch(l -> l.getReferencia().equals(referencia));
-    }
-
-    /**
-     * Adiciona uma linha de encomenda à encomenda
-     *
-     * @param linha linha de encomenda a adicionar
-     */
-    public void adiciona_linha(LinhaEncomenda linha) {
-        if (linha != null) {
-            this.linhas_encomenda.add(linha.clone());
-        }
-    }
-
-    /**
-     * Remove o produto selecionado
-     *
-     * @param referencia código do produto a remover
-     */
-    public void remove_produto(String referencia) {
-        this.linhas_encomenda.removeIf(l -> l.getReferencia().equals(referencia));
-    }
-
-    /**
-     * Compara o objeto chamador a outro
+     * Compara um objeto a uma EncEficiente
      *
      * @param outro objeto a comparar
      * @return true se forem iguais
      */
     public boolean equals(Object outro) {
-        if (outro == this)
+        if (this == outro)
             return true;
-        if (outro == null || this.getClass() != outro.getClass())
+        if ((outro == null) || (this.getClass() != outro.getClass()))
             return false;
         EncEficiente temp = (EncEficiente) outro;
         return this.cliente.equals(temp.cliente) && this.NIF == temp.NIF
-            && this.morada.equals(temp.morada) && this.data.equals(temp.data)
-            && this.numero_encomenda == temp.numero_encomenda
-            && this.linhas_encomenda.equals(temp.linhas_encomenda);
+            && this.morada.equals(temp.morada) && this.numero == temp.numero
+            && this.data.equals(temp.data) && this.linhas.equals(temp.linhas);
     }
 
     /**
-     * Transforma uma Encomenda Eficiente numa string
+     * Devolve uma representacao textual de uma EncEficiente
      *
-     * @return string com a informação de uma encomenda eficiente
+     * @return representacao textual
      */
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append("cliente: ").append(this.cliente);
-        sb.append("\nNIF: ").append(this.NIF);
-        sb.append("\nmorada: ").append(this.morada);
-        sb.append("\nnumero: ").append(this.numero_encomenda);
-        sb.append("\ndata: ").append(this.data);
-        sb.append("\nlinhas: ").append(this.linhas_encomenda.toString());
+
+        sb.append("Cliente: ").append(this.cliente);
+        sb.append("NIF: ").append(this.NIF);
+        sb.append("Morada: ").append(this.morada);
+        sb.append("Numero: ").append(this.numero);
+        sb.append("Data: ").append(this.data.toString());
+        sb.append("Linhas de Encomenda:\n");
+        this.linhas.forEach(l -> sb.append(l.toString()));
 
         return sb.toString();
     }
 
     /**
-     * Clona uma Encomenda Eficiente
+     * Cria uma cópia de uma EncEficiente
      *
-     * @return encomenda clonada
+     * @return cópia de uma EncEficiente
      */
     public EncEficiente clone() {
         return new EncEficiente(this);
+    }
+
+    // outros métodos
+
+    /**
+     * Método que determina o valor total da encomenda
+     *
+     * @return valor total
+     */
+    public double calculaValorTotal() {
+        return this.linhas.stream().mapToDouble(LinhaEncomenda::calculaValorLinhaEnc).sum();
+    }
+
+    /**
+     * Método que determina o valor total dos descontos obtidos nos diversos produtos encomendados
+     *
+     * @return valor total dos descontos
+     */
+    public double calculaValorDesconto() {
+        return this.linhas.stream().mapToDouble(LinhaEncomenda::calculaValorDesconto).sum();
+    }
+
+    /**
+     * Método que determina o número total de produtos a receber
+     *
+     * @return numero total de produtos a receber
+     */
+    public int numeroTotalProdutos() {
+        return this.linhas.stream().mapToInt(LinhaEncomenda::getQuantidade).sum();
+    }
+
+    /**
+     * Método que determina se um produto vai ser encomendado
+     *
+     * @param refProduto referencia do produto
+     * @return true se o produto existir
+     */
+    public boolean existeProdutoEncomenda(String refProduto) {
+        return this.linhas.stream().anyMatch(l -> l.getReferencia().equals(refProduto));
+    }
+
+    /**
+     * Método que adiciona uma nova linha de encomenda
+     *
+     * @param linha linha de encomenda a adicionar
+     */
+    public void adicionaLinha(LinhaEncomenda linha) {
+        this.linhas.add(linha.clone());
+    }
+
+    /**
+     * Método que remove uma linha de encomenda dado a referência do produto
+     *
+     * @param codProd referencia do produto
+     */
+    public void removeProduto(String codProd) {
+        this.linhas.removeIf(l -> l.getReferencia().equals(codProd));
     }
 }
