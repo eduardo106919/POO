@@ -1,28 +1,27 @@
 
+
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
+import java.util.stream.Collectors;
 
 
-/**
- * Classe que representa um Post no Facebook
- */
+
+
 public class FBPost {
 
     /**
      * Variáveis de Instância
      */
 
-    // indica o número total de posts
-    private static int ids_totais = 0;
+    private static int posts_contador = 0;
 
     private int identificador;
-    private String utilizador;
-    private LocalDateTime instante;
-
+    private String autor;
+    private LocalDateTime instante_criacao;
     private String conteudo;
     private int likes;
-
     private ArrayList<String> comentarios;
 
 
@@ -31,53 +30,41 @@ public class FBPost {
      */
 
     /**
-     * Construtor por omissão da classe Facebook Post
+     * Construtor por omissão de um FBPost
      */
     public FBPost() {
-        this.identificador = FBPost.ids_totais++;
-        this.utilizador = "n/a";
-        this.instante = LocalDateTime.now();
-
-        this.conteudo = "n/a";
+        this.identificador = FBPost.posts_contador;
+        this.autor = "";
+        this.instante_criacao = LocalDateTime.now();
+        this.conteudo = "";
         this.likes = 0;
-
         this.comentarios = new ArrayList<String>();
     }
 
     /**
-     * Construtor parametrizado da classe Facebook Post
+     * Construtor parametrizado de um FBPost
      *
-     * @param user nome do utilizador
-     * @param conteudo conteudo do Post
+     * @param autor nome do utilizador que fez o post
+     * @param conteudo conteudo do post
      */
-    public FBPost(String user, String conteudo) {
-        this.identificador = FBPost.ids_totais++;
-        this.utilizador = user;
-        this.instante = LocalDateTime.now();
-
+    public FBPost(String autor, String conteudo) {
+        this();
+        this.autor = autor;
         this.conteudo = conteudo;
-        this.likes = 0;
-
-        this.comentarios = new ArrayList<String>();
     }
 
     /**
-     * Construtor de cópia para a class Facebook Post
+     * Construtor de cópia de um FBPost
      *
-     * @param outro outro Facebook Post
+     * @param outro FBPost a copiar
      */
     public FBPost(FBPost outro) {
-        if (outro != null) {
-            this.identificador = outro.identificador;
-            this.utilizador = outro.utilizador;
-            this.instante = outro.instante;
-
-            this.conteudo = outro.conteudo;
-            this.likes = outro.likes;
-
-            // comentários são strings, por isso shallow clone não é problema
-            this.comentarios = new ArrayList<String>(outro.comentarios);
-        }
+        this.identificador = outro.identificador;
+        this.autor = outro.autor;
+        this.instante_criacao = outro.instante_criacao;
+        this.conteudo = outro.conteudo;
+        this.likes = outro.likes;
+        this.comentarios = new ArrayList<String>(outro.comentarios);
     }
 
     /**
@@ -85,20 +72,20 @@ public class FBPost {
      */
 
     // getters
-
+    
     /**
-     * Devolve o número total de identificadores
+     * Devolve o número de FBPosts únicos existentes
      *
-     * @return número total de identificadores
+     * @return número de FBPosts existentes
      */
-    public static int get_ids_totais() {
-        return FBPost.ids_totais;
+    public static int get_fbpost_contador() {
+        return FBPost.posts_contador;
     }
 
     /**
-     * Devolve o identificador do Post
+     * Devolve o identificador do FBPost
      *
-     * @return identificador do post
+     * @return identificador
      */
     public int get_identificador() {
         return this.identificador;
@@ -109,17 +96,17 @@ public class FBPost {
      *
      * @return nome do utilizador
      */
-    public String get_utilizador() {
-        return this.utilizador;
+    public String get_autor() {
+        return this.autor;
     }
 
     /**
-     * Devolve o instante no qual o post foi publicado
+     * Devolve o instante no qual o post foi criado
      *
-     * @return instante de publicação
+     * @return instante de criação
      */
-    public LocalDateTime get_instante() {
-        return this.instante;
+    public LocalDateTime get_instante_criacao() {
+        return this.instante_criacao;
     }
 
     /**
@@ -132,7 +119,7 @@ public class FBPost {
     }
 
     /**
-     * Devolve o número de likes do post
+     * Devolve o número de likes no post
      *
      * @return número de likes
      */
@@ -141,93 +128,104 @@ public class FBPost {
     }
 
     /**
-     * Devolve os comentários do post
+     * Devolve os comentarios do post
      *
-     * @return lista de comentários
+     * @return comentarios
      */
     public List<String> get_comentarios() {
-        // são strings, shallow clone não é problema
-        return new ArrayList<String>(this.comentarios);
+        return this.comentarios.stream().collect(Collectors.toList());
     }
 
     // setters
     
     /**
-     * Altera o nome do utilizador que publicou o post
+     * Altera o nome do utilizador que fez o post
      *
-     * @param nome nome do utilizador
+     * @param autor nome do utilizador
      */
-    public void set_utilizador(String nome) {
-        this.utilizador = nome;
+    public void set_autor(String autor) {
+        this.autor = autor;
     }
 
     /**
      * Altera o conteudo do post
      *
-     * @param conteudo novo conteudo do post
+     * @param conteudo conteudo do post
      */
     public void set_conteudo(String conteudo) {
         this.conteudo = conteudo;
     }
 
+    // métodos de utilidade
+
+    /**
+     * Compara um objeto a um FBPost
+     *
+     * @param outro objeto a comparar
+     * @return true se forem iguais
+     */
+    public boolean equals(Object outro) {
+        if (this == outro)
+            return true;
+        if ((outro == null) || (this.getClass() != outro.getClass()))
+            return false;
+        FBPost temp = (FBPost) outro;
+        return this.identificador == temp.identificador && this.autor.equals(temp.autor)
+            && this.instante_criacao.equals(temp.instante_criacao) && this.conteudo.equals(temp.conteudo)
+            && this.likes == temp.likes && this.comentarios.equals(temp.comentarios);
+    }
+
+    /**
+     * Devolve uma representacao textual de um FBPost
+     *
+     * @return representacao textual
+     */
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+
+        sb.append("Id: ").append(this.identificador);
+        sb.append("Autor: ").append(this.autor);
+        sb.append("Instante: ").append(this.instante_criacao.toString());
+        sb.append("Conteudo: ").append(this.conteudo);
+        sb.append("Likes: ").append(this.likes);
+        this.comentarios.forEach(s -> sb.append(s));
+
+        return sb.toString();
+    }
+
+    /**
+     * Cria uma cópia de um FBPost
+     *
+     * @return cópia de um FBPost
+     */
+    public FBPost clone() {
+        return new FBPost(this);
+    }
+
     // outros métodos
 
     /**
-     * Adiciona um like ao post
+     * Dá um like no FBPost
      */
     public void like() {
         this.likes++;
     }
 
     /**
-     * Adiciona um comentario ao post
+     * Adiciona um comentário a um FBPost
      *
-     * @param comentario comentario a adicionar
+     * @param coment comentario a adicionar
      */
-    public void adiciona_comentario(String comentario) {
-        this.comentarios.add(comentario);
+    public void adiciona_comentario(String coment) {
+        this.comentarios.add(coment);
     }
 
     /**
-     * Compara dois objetos
+     * Devolve o número de comentários
      *
-     * @param o objeto a comparar
-     * @return true se os objetos forem iguais
+     * @return número de comentarios
      */
-    public boolean equals(Object o) {
-        if (o == this)
-            return true;
-        if (o == null || this.getClass() != o.getClass())
-            return false;
-        FBPost outro = (FBPost) o;
-        return this.identificador == outro.identificador && this.utilizador.equals(outro.utilizador)
-            && this.conteudo.equals(outro.conteudo) && this.instante.equals(outro.instante)
-            && this.likes == outro.likes && this.comentarios.equals(outro.comentarios);
-    }
-
-    /**
-     * Clona um FBPost
-     *
-     * @return objeto clonado
-     */
-    public FBPost clone() {
-        return new FBPost(this);
-    }
-
-    /**
-     * Transforma um FBPost numa string
-     *
-     * @return String com a informação relativa a um FBPost
-     */
-    public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("id: ").append(this.identificador);
-        sb.append("utilizador: ").append(this.utilizador);
-        sb.append("instante: ").append(this.instante);
-        sb.append("conteudo: ").append(this.conteudo);
-        sb.append("likes: ").append(this.likes);
-        sb.append("comentarios: ").append(this.comentarios.toString());
-
-        return sb.toString();
+    public int get_nr_comentarios() {
+        return this.comentarios.size();
     }
 }

@@ -1,12 +1,13 @@
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Collection;
 import java.util.Iterator;
+import java.util.List;
+import java.util.stream.Collectors;
 
-/**
- * Classe que representa o Facebook Feed
- */
+
+
 public class FBFeed {
 
     /**
@@ -21,21 +22,28 @@ public class FBFeed {
      */
 
     /**
-     * Construtor por omissão de FBFeed
+     * Construtor por omissão de um FBFeed
      */
     public FBFeed() {
         this.posts = new ArrayList<FBPost>();
     }
+    
+    /**
+     * Construtor parametrizado de um FBFeed
+     *
+     * @param posts colecao de posts
+     */
+    public FBFeed(Collection<FBPost> posts) {
+        this.posts = posts.stream().map(FBPost::clone).collect(Collectors.toCollection(ArrayList::new));
+    }
 
     /**
-     * Construtor de cópia de Facebook Feed
+     * Construtor de cópia de um FBFeed
      *
-     * @param outro outro facebook feed
+     * @param outro FBFeed a copiar
      */
     public FBFeed(FBFeed outro) {
-        if (outro != null) {
-            this.posts = new ArrayList<FBPost>(outro.posts);
-        }
+        this.posts = outro.posts.stream().map(FBPost::clone).collect(Collectors.toCollection(ArrayList::new));
     }
 
 
@@ -46,208 +54,210 @@ public class FBFeed {
     // getters
     
     /**
-     * Devolve os posts do feed
+     * Devolve a lista de posts
      *
-     * @return posts do facebook feed
+     * @return lista de posts
      */
     public List<FBPost> get_posts() {
-        return new ArrayList<FBPost>(this.posts);
+        return this.posts.stream().map(FBPost::clone).collect(Collectors.toList());
     }
 
-    // other methods
-
-
+    // setters
+    
     /**
-     * Determina o número de posts publicados por um utilizador
+     * Altera os posts
      *
-     * @param user nome do utilizador
-     * @return número de posts
+     * @param posts colecao de posts
      */
-    public int numero_posts(String user) {
-        int count = 0;
-        Iterator<FBPost> iterator = this.posts.iterator();
-
-        while (iterator.hasNext()) {
-            if (iterator.next().get_utilizador().equals(user))
-                count++;
-        }
-
-        return count;
+    public void set_posts(Collection<FBPost> posts) {
+        this.posts = posts.stream().map(FBPost::clone).collect(Collectors.toCollection(ArrayList::new));
     }
 
-    /**
-     * Determina a lista de posts feitos por um utilizador
-     *
-     * @param user nome do utilizador
-     * @return lista de posts
-     */
-    public List<FBPost> posts_of(String user) {
-        ArrayList<FBPost> list = new ArrayList<FBPost>();
-        Iterator<FBPost> iterator = this.posts.iterator();
-
-        while (iterator.hasNext()) {
-            if (iterator.next().get_utilizador().equals(user))
-                list.add(iterator.next().clone());
-        }
-
-        return list;
-    }
+    // métodos de utilidade
 
     /**
-     * Determina os posts que um utilizador postou, num periodo de tempo
+     * Compara um objeto a um FBFeed
      *
-     * @param user nome do utilizador
-     * @param inicio limite inferior do periodo de tempo
-     * @param fim limite superior do periodo de tempo
-     * @return lista de posts
+     * @param outro objeto a comparar
+     * @return true se forem iguais
      */
-    public List<FBPost> posts_of_time(String user, LocalDateTime inicio, LocalDateTime fim) {
-        ArrayList<FBPost> list = new ArrayList<FBPost>();
-        Iterator<FBPost> iterator = this.posts.iterator();
-
-        FBPost temp;
-        while (iterator.hasNext()) {
-            temp = iterator.next();
-            if (temp.get_utilizador().equals(user) && temp.get_instante().isAfter(inicio) && temp.get_instante().isBefore(fim))
-                list.add(iterator.next().clone());
-        }
-
-        return list;
-    }
-
-    /**
-     * Devolve um Post, dado o seu identificador
-     *
-     * @param id identificador do post
-     * @return post
-     */
-    public FBPost get_post(int id) {
-        FBPost res = null;
-
-        Iterator<FBPost> iterator = this.posts.iterator();
-        boolean found = false;
-        while (found == false && iterator.hasNext()) {
-            res = iterator.next();
-            if (iterator.next().get_identificador() == id)
-                found = true;
-        }
-        
-        if (found == false)
-            res = null;
-        return res.clone();
-    }
-
-    /**
-     * Adiciona um comentátio a um Post do Facebook
-     *
-     * @param post_id identificador do post
-     * @param coment comentario a adicionar
-     */
-    public void comment(int post_id, String coment) {
-        boolean found = false;
-        Iterator<FBPost> iterator = this.posts.iterator();
-        FBPost temp = null;
-
-        while (found == false && iterator.hasNext()) {
-            temp = iterator.next();
-            if (temp.get_identificador() == post_id) {
-                found = true;
-                temp.adiciona_comentario(coment);
-            }
-        }
-    }
-
-    /**
-     * Adiciona um comentário a um Post do Facebook
-     *
-     * @param post post do facebook
-     * @param comentario comentario a adicionar
-     */
-    public void comment(FBPost post, String comentario) {
-        boolean found = false;
-        Iterator<FBPost> iterator = this.posts.iterator();
-        FBPost temp = null;
-
-        while (found == false && iterator.hasNext()) {
-            temp = iterator.next();
-            if (temp.equals(post)) {
-                found = true;
-                temp.adiciona_comentario(comentario);
-            }
-        }
-    }
-
-    /**
-     * Adiciona um like a um post do facebook
-     *
-     * @param post facebook post
-     */
-    public void like(FBPost post) {
-        if (post != null) {
-            boolean found = false;
-            Iterator<FBPost> iterator = this.posts.iterator();
-            FBPost temp = null;
-
-            while (found == false && iterator.hasNext()) {
-                temp = iterator.next();
-                if (temp.equals(post)) {
-                    found = true;
-                    temp.like();
-                }
-            }
-        }
-    }
-
-    /**
-     * Adiciona um like a um post do facebook
-     *
-     * @param post_id identificador do post
-     */
-    public void like(int post_id) {
-        boolean found = false;
-        Iterator<FBPost> iterator = this.posts.iterator();
-        FBPost temp = null;
-
-        while (found == false && iterator.hasNext()) {
-            temp = iterator.next();
-            if (temp.get_identificador() == post_id) {
-                found = true;
-                temp.like();
-            }
-        }
-    }
-
-    /**
-     * Compara dois objetos
-     *
-     * @param o objeto a comparar
-     * @return true se os objetos forem iguais
-     */
-    public boolean equals(Object o) {
-        if (o == this)
+    public boolean equals(Object outro) {
+        if (this == outro)
             return true;
-        if (o == null || this.getClass() != o.getClass())
+        if ((outro == null) || (this.getClass() != outro.getClass()))
             return false;
-        FBFeed outro = (FBFeed) o;
-
-        return this.posts.equals(outro.posts);
+        FBFeed temp = (FBFeed) outro;
+        return this.posts.equals(temp.posts);
     }
 
     /**
-     * Clona um objeto
+     * Devolve uma representacao textual de um FBFeed
      *
-     * @return objeto clonado
+     * @return representacao textual
+     */
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+
+        this.posts.forEach(p -> sb.append(p.toString()));
+
+        return sb.toString();
+    }
+
+    /**
+     * Cria uma cópia de um FBFeed
+     *
+     * @return cópia de um FBFeed
      */
     public FBFeed clone() {
         return new FBFeed(this);
     }
 
+    // outros métodos
+
     /**
-     * Transforma um FBFeed numa String
+     * Determinar o número de posts de um user
      *
-     * @return string com a informação de um FBFeed
+     * @param user nome do user
+     * @return número de posts de um user
      */
-    public String toString() {
-        return this.posts.toString();
+    public int nrPosts(String user) {
+        return (int) this.posts.stream().filter(p -> p.get_autor().equals(user)).count();
+    }
+
+    /**
+     * Determinar a lista de posts de um user
+     *
+     * @param user nome do user
+     * @return lista de posts de um user
+     */
+    public List<FBPost> postsOf(String user) {
+        return this.posts.stream().filter(p -> p.get_autor().equals(user)).map(FBPost::clone).collect(Collectors.toList());
+    }
+
+    /**
+     * Determinar a lista de posts de um user num determinado intervalo de tempo
+     *
+     * @param user nome do user
+     * @param inicio data inicial
+     * @param fim data do fim
+     * @return lista de posts
+     */
+    public List<FBPost> postsOf(String user, LocalDateTime inicio, LocalDateTime fim) {
+        return this.posts.stream()
+                         .filter(p -> p.get_autor().equals(user))
+                         .filter(p -> p.get_instante_criacao().isAfter(inicio))
+                         .filter(p -> p.get_instante_criacao().isBefore(fim))
+                         .map(FBPost::clone)
+                         .collect(Collectors.toList());
+    }
+
+    /**
+     * Obter um post dado o seu identificador
+     *
+     * @param id identificador do FBPost
+     * @return FBPost
+     */
+    public FBPost getPost(int id) {
+        Iterator<FBPost> iterator = this.posts.iterator();
+        FBPost temp = null;
+
+        while (iterator.hasNext()) {
+            temp = iterator.next();
+            if (temp.get_identificador() == id) {
+                return temp.clone();
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * Inserir um comentário num post 
+     *
+     * @param post Facebook post
+     * @param comentario comentario a adicionar
+     */
+    public void comment(FBPost post, String comentario) {
+        int index = this.posts.indexOf(post);
+        if (index >= 0) {
+            this.posts.get(index).adiciona_comentario(comentario);
+        }
+    }
+    
+    /**
+     * Inserir um comentário num post
+     *
+     * @param postid identificador do post
+     * @param comentario comentario a adicionar
+     */
+    public void comment(int postid, String comentario) {
+        Iterator<FBPost> iterator = this.posts.iterator();
+        FBPost temp = null;
+        boolean found = false;
+
+        while (!found && iterator.hasNext()) {
+            temp = iterator.next();
+            if (temp.get_identificador() == id) {
+                temp.adiciona_comentario(comentario);
+                found = true;
+            }
+        }
+    }
+
+    /**
+     * Adicionar um like a um post
+     *
+     * @param post FBPost
+     */
+    public void like(FBPost post) {
+        int index = this.posts.indexOf(post);
+        if (index >= 0) {
+            this.posts.get(index).like();
+        }
+    }
+
+    /**
+     * Adicionar um like a um post
+     *
+     * @param postid identificador do FBPost
+     */
+    public void like(int postid) {
+        Iterator<FBPost> iterator = this.posts.iterator();
+        FBPost temp = null;
+        boolean found = false;
+
+        while (!found && iterator.hasNext()) {
+            temp = iterator.next();
+            if (temp.get_identificador() == postid) {
+                temp.like();
+                found = true;
+            }
+        }
+    }
+
+    /**
+     * Determinar a lista dos 5 posts (identificador) com mais comentários
+     * Versão de Iteradores Internos
+     *
+     * @return 5 posts com mais comentários
+     */
+    // TODO
+    public List<Integer> top5Comments_E() {
+        return null;
+    }
+
+    /**
+     * Determinar a lista dos 5 posts (identificador) com mais comentários
+     * Versão de Iteradores Externos
+     *
+     * @return 5 posts com mais comentários
+     */
+    public List<Integer> top5Comments_I() {
+        return this.posts.stream()
+                         .sorted((p1, p2) -> Integer.compare(p2.get_nr_comentarios(), p1.get_nr_comentarios())) // ordem decrescente
+                         .mapToInt(FBPost::get_identificador)
+                         .limit(5)
+                         .collect(Collectors.toList());
     }
 }
+
