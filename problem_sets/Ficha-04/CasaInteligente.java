@@ -197,6 +197,7 @@ public class CasaInteligente {
      */
     public Lampada maisGastadora() {
         return this.lampadas.stream()
+                            .map(Lampada::clone)
                             .sorted((l1, l2) -> Double.compare(l2.totalConsumo(), l1.totalConsumo())) // inverter argumentos
                             .findFirst()
                             .orElse(null);
