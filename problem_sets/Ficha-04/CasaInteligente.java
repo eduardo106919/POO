@@ -125,6 +125,11 @@ public class CasaInteligente {
         this.lampadas.add(l.clone());
     }
 
+    /**
+     * Liga no modo de consumo máximo a lâmpada que está na posição indicada
+     *
+     * @param index posicao da Lampada
+     */
     public void ligaLampadaNormal(int index) {
         Lampada temp = this.lampadas.get(index);
         if (temp != null) {
@@ -132,6 +137,11 @@ public class CasaInteligente {
         }
     }
 
+    /**
+     * Liga no modo de consumo económico a lâmpada que está na posição indicada
+     *
+     * @param index posicao da Lampada
+     */
     public void ligaLampadaEco(int index) {
         Lampada temp = this.lampadas.get(index);
         if (temp != null) {
@@ -139,26 +149,52 @@ public class CasaInteligente {
         }
     }
 
+    /**
+     * Determina quantas lâmpadas é que estão ligadas em modo económico
+     *
+     * @return numero de lampadas no modo economico
+     */
     public int qtEmEco() {
         return (int) this.lampadas.stream().filter(l -> l.getModo() == Modo.ECO).count();
     }
 
+    /**
+     * Remove a lâmpada da posição passada como parâmetro
+     *
+     * @param index posicao da Lampada
+     */
     public void removeLampada(int index) {
         this.lampadas.remove(index);
     }
 
+    /**
+     * Liga todas as lâmpadas da casa em modo Eco
+     */
     public void ligaTodasEco() {
         this.lampadas.forEach(Lampada::lampECO);
     }
 
+    /**
+     * Liga todas as lâmpadas da casa em modo de consumo máximo
+     */
     public void ligaTodasMax() {
         this.lampadas.forEach(Lampada::lampON);
     }
 
+    /**
+     * Determina o consumo total da casa
+     *
+     * @return consumo total
+     */
     public double consumoTotal() {
         return this.lampadas.stream().mapToDouble(Lampada::totalConsumo).sum();
     }
 
+    /**
+     * Determina a lâmpada que mais consumiu até à data
+     *
+     * @return Lampada mais gastadora
+     */
     public Lampada maisGastadora() {
         return this.lampadas.stream()
                             .sorted((l1, l2) -> Double.compare(l2.totalConsumo(), l1.totalConsumo())) // inverter argumentos
@@ -166,6 +202,11 @@ public class CasaInteligente {
                             .orElse(null);
     }
 
+    /**
+     * Devolve um conjunto com todas as lâmpadas que se encontram em modo económico
+     *
+     * @return conjunto de Lampadas
+     */
     public Set<Lampada> lampadasEmModoEco() {
         return this.lampadas.stream()
                             .filter(l -> l.getModo() == Modo.ECO)
@@ -173,15 +214,22 @@ public class CasaInteligente {
                             .collect(Collectors.toSet());
     }
 
+    /**
+     * Efectua o reset do contador parcial de consumo em todas as lâmpadas
+     */
     public void reset() {
         this.lampadas.forEach(Lampada::resetPeriodo);
     }
 
+    /**
+     * Devolve as três lâmpadas mais económicas da casa
+     *
+     * @return três lampadas mais económicas
+     */
     public Set<Lampada> podiumEconomia() {
         return this.lampadas.stream()
                             .sorted((l1, l2) -> Double.compare(l1.totalConsumo(), l2.totalConsumo()))
                             .limit(3)
                             .collect(Collectors.toSet());
     }
-
 }
