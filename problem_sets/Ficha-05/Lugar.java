@@ -1,7 +1,6 @@
 
-/**
- * Classe que representa um Lugar de estacionamento
- */
+
+
 public class Lugar {
 
     /**
@@ -17,52 +16,45 @@ public class Lugar {
     /** Indica se lugar é permanente, ou de aluguer */
     private boolean permanente;
 
-
     /**
      * Construtores
      */
 
     /**
-     * Construtor por omissão de um Lugar de Estacionamento
+     * Construtor por omissão de um Lugar de estacionamento
      */
     public Lugar() {
-        this.matricula = "n/a";
-        this.nome = "n/a";
-        this.minutos = 0;
+        this.matricula = "";
+        this.nome = "";
+        this.minutos = 10;
         this.permanente = false;
     }
 
     /**
-     * Construtor parametrizado de um lugar de Estacionamento
+     * Construtor parametrizado de um Lugar de estacionamento
      *
      * @param matricula matricula do veiculo
-     * @param nome nome do proprietario do veiculo
-     * @param minutos tempo atribuido ao Lugar
-     * @param permanente se o lugar é permanente ou de aluguer
+     * @param nome dono do veiculo
+     * @param minutos tempo atribuido
+     * @param permanente indica se o lugar é alugado ou permanente
      */
     public Lugar(String matricula, String nome, int minutos, boolean permanente) {
-        this();
-        if (minutos > 0) {
-            this.matricula = matricula;
-            this.nome = nome;
-            this.minutos = minutos;
-            this.permanente = permanente;
-        }
+        this.matricula = matricula;
+        this.nome = nome;
+        this.minutos = minutos;
+        this.permanente = permanente;
     }
 
     /**
-     * Construtor de cópia de um Lugar
+     * Construtor de cópia de um Lugar de estacionamento
      *
      * @param outro Lugar a copiar
      */
     public Lugar(Lugar outro) {
-        this();
-        if (outro != null) {
-            this.matricula = outro.matricula;
-            this.nome = outro.nome;
-            this.minutos = outro.minutos;
-            this.permanente = outro.permanente;
-        }
+        this.matricula = outro.matricula;
+        this.nome = outro.nome;
+        this.minutos = outro.minutos;
+        this.permanente = outro.permanente;
     }
 
     /**
@@ -72,25 +64,25 @@ public class Lugar {
     // getters
     
     /**
-     * Devolve a matricula do veiculo estacionado
+     * Devolve a matricula do veiculo
      *
-     * @return matricula do carro
+     * @return matricula do veiculo
      */
     public String get_matricula() {
         return this.matricula;
     }
 
     /**
-     * Devolve o nome do proprietario do veiculo
+     * Devolve o nome do dono do veiculo
      *
-     * @return nome do proprietario
+     * @return nome do dono do veiculo
      */
     public String get_nome() {
         return this.nome;
     }
 
     /**
-     * Devolve o número de minutos atribuido ao lugar
+     * Devolve o numero de minutos atribuidos ao veiculo
      *
      * @return numero de minutos
      */
@@ -99,9 +91,9 @@ public class Lugar {
     }
 
     /**
-     * Devolve o indicador se o lugar é permanente ou não
+     * Indica se o lugar é permanente ou alugado
      *
-     * @return indicador de permanência
+     * @return true se for permanente
      */
     public boolean get_permanente() {
         return this.permanente;
@@ -109,28 +101,51 @@ public class Lugar {
 
     // setters
     
+    /**
+     * Altera a matricula do veiculo estacionado
+     *
+     * @param matricula matricula do veiculo
+     */
     public void set_matricula(String matricula) {
         this.matricula = matricula;
     }
 
+    /**
+     * Altera o nome do dono do veiculo
+     *
+     * @param nome nome do dono
+     */
     public void set_nome(String nome) {
         this.nome = nome;
     }
 
+    /**
+     * Altera o numero de minutos atribuidos
+     *
+     * @param minutos numero de minutos
+     */
     public void set_minutos(int minutos) {
-        if (minutos > 0) {
-            this.minutos = minutos;
-        }
+        this.minutos = minutos;
     }
 
-    public void set_permanente(boolean permanente) {
-        this.permanente = permanente;
+    /**
+     * Define o Lugar como permanente
+     */
+    public void set_permanente() {
+        this.permanente = true;
+    }
+
+    /**
+     * Define o Lugar como alugado
+     */
+    public void set_alugado() {
+        this.permanente = false;
     }
 
     // métodos de utilidade
-    
+
     /**
-     * Compara dois objetos
+     * Compara um objeto a uma Lugar de estacionamento
      *
      * @param outro objeto a comparar
      * @return true se forem iguais
@@ -138,7 +153,7 @@ public class Lugar {
     public boolean equals(Object outro) {
         if (this == outro)
             return true;
-        if (outro == null || this.getClass() != outro.getClass())
+        if ((outro == null) || (this.getClass() != outro.getClass()))
             return false;
         Lugar temp = (Lugar) outro;
         return this.matricula.equals(temp.matricula) && this.nome.equals(temp.nome)
@@ -146,18 +161,25 @@ public class Lugar {
     }
 
     /**
-     * Devolve uma representação de um Lugar numa String
+     * Devolve uma representacao textual de um Lugar
      *
-     * @return representação de Lugar
+     * @return representacao textual
      */
     public String toString() {
-        return "matricula: " + this.matricula + "\nnome: " + this.nome + "\nminutos: " + this.minutos + "\npermanente: " + this.permanente;
+        StringBuilder sb = new StringBuilder();
+
+        sb.append("Matricula: ").append(this.matricula);
+        sb.append("\nNome: ").append(this.nome);
+        sb.append("\nMinutos: ").append(this.minutos);
+        sb.append("\nPermanente: ").append(this.permanente);
+
+        return sb.toString();
     }
 
     /**
-     * Clona o objeto chamador
+     * Cria uma cópia de um Lugar
      *
-     * @return cópia do objeto
+     * @return cópia de um Lugar
      */
     public Lugar clone() {
         return new Lugar(this);

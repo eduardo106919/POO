@@ -1,121 +1,118 @@
 
 import java.util.Iterator;
+import java.util.List;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
-import java.util.List;
 import java.util.stream.Collectors;
-import java.util.HashMap;
-import java.util.ArrayList;
 
-/**
- * Parque de Estacionamento
- */
+
 public class Parque {
 
     /**
-     * Variáveis de Intância
+     * Variáveis de Instância
      */
 
     private String nome;
     private HashMap<String, Lugar> lugares;
+
 
     /**
      * Construtores
      */
 
     /**
-     * Construtor por omissão de um Parque
+     * Construtor por omissão de um Parque de Estacionamento
      */
     public Parque() {
-        this.nome = "n/a";
+        this.nome = "";
         this.lugares = new HashMap<String, Lugar>();
     }
 
     /**
-     * Construtor parametrizado de um Parque
+     * Construtor parametrizado de um Parque de Estacionamento
      *
      * @param nome nome do Parque
-     * @param lugares mapa de lugares de estacionamento
+     * @param lugares colecao de lugares
      */
-    public Parque(String nome, Map<String, Lugar> lugares) {
+    public Parque(String nome, Collection<Lugar> lugares) {
         this();
-        if (lugares != null) {
-            this.nome = nome;
-            
-            Iterator<Map.Entry<String, Lugar>> iterator = lugares.entrySet().iterator();
-            Map.Entry<String, Lugar> temp = null;
+        this.nome = nome;
+        Iterator<Lugar> iterator = lugares.iterator();
+        Lugar temp = null;
 
-            while (iterator.hasNext()) {
-                temp = iterator.next();
-                this.lugares.put(temp.getKey(), temp.getValue().clone());
-            }
+        while (iterator.hasNext()) {
+            temp = iterator.next();
+            this.lugares.put(temp.get_matricula(), temp.clone());
         }
     }
 
     /**
-     * Construtor de cópia de um Parque
+     * Construtor de cópia de um Parque de Estacionamento
      *
-     * @param outro parque a copiar
+     * @param outro Parque a copiar
      */
     public Parque(Parque outro) {
-        if (outro != null) {
-            this.nome = outro.nome;
-            this.lugares = new HashMap<String, Lugar>();
+        this();
+        this.nome = outro.nome;
+        Iterator<Map.Entry<String, Lugar>> iterator = outro.lugares.entrySet().iterator();
+        Map.Entry<String, Lugar> temp = null;
 
-            Iterator<Map.Entry<String, Lugar>> iterator = outro.lugares.entrySet().iterator();
-            Map.Entry<String, Lugar> store = null;
-
-            while (iterator.hasNext()) {
-                store = iterator.next();
-                this.lugares.put(store.getKey(), store.getValue().clone());
-            }
+        while (iterator.hasNext()) {
+            temp = iterator.next();
+            this.lugares.put(temp.getKey(), temp.getValue().clone());
         }
     }
-
+    
     /**
      * Métodos de Instância
      */
 
     // getters
-
+    
     /**
-     * Devolve o nome do parque de estacionamento
+     * Devolve o nome do Parque de Estacionamento
      *
-     * @return nome do parque
+     * @return nome do Parque
      */
     public String get_nome() {
         return this.nome;
     }
 
-    /**
-     * Devolve os lugares do Parque
-     *
-     * @return Mapa com os lugares e as matriculas
-     */
-    public Map<String, Lugar> get_lugares() {
-        return this.lugares.entrySet()
-                           .stream()
-                           .collect(Collectors.toMap(
-                                        Map.Entry::getKey,
-                                        entry -> new Lugar(entry.getValue())
-                            ));
-    }
-
     // setters
     
     /**
-     * Altera o nome do parque do estacionamento
+     * Altera o nome do Parque de Estacionamento
      *
-     * @param nome nome do parque de estacionamento
+     * @param nome nome do Parque
      */
     public void set_nome(String nome) {
         this.nome = nome;
     }
 
+    /**
+     * Altera os lugares do Parque de Estacionamento
+     *
+     * @param lugares colecao de lugares
+     */
+    public void set_lugares(Collection<Lugar> lugares) {
+        this.lugares = new HashMap<String, Lugar>();
+        Iterator<Lugar> iterator = lugares.iterator();
+        Lugar temp = null;
+
+        while (iterator.hasNext()) {
+            temp = iterator.next();
+            this.lugares.put(temp.get_matricula(), temp.clone());
+        }
+    }
+
     // métodos de utilidade
 
     /**
-     * Compara dois objetos
+     * Compara um objeto a um Parque de Estacionamento
      *
      * @param outro objeto a comparar
      * @return true se forem iguais
@@ -123,35 +120,30 @@ public class Parque {
     public boolean equals(Object outro) {
         if (this == outro)
             return true;
-        if (outro == null || this.getClass() != outro.getClass())
+        if ((outro == null) || (this.getClass() != outro.getClass()))
             return false;
         Parque temp = (Parque) outro;
-        return this.lugares.equals(temp.lugares);
+        return this.nome.equals(temp.nome) && this.lugares.equals(temp.lugares);
     }
 
     /**
-     * Devolve uma representação de um Parque, numa string
+     * Devolve uma representacao textual de um Parque de Estacionamento
      *
-     * @return representacao de um parque de estacionamento
+     * @return representacao textual
      */
     public String toString() {
         StringBuilder sb = new StringBuilder();
 
-        Iterator<Map.Entry<String, Lugar>> iterator = this.lugares.entrySet().iterator();
-        Map.Entry<String, Lugar> temp = null;
+        sb.append("Nome: ").append(this.nome);
+        this.lugares.values().forEach(l -> sb.append(l.toString()));
 
-        while (iterator.hasNext()) {
-            temp = iterator.next();
-            sb.append(temp.getValue().toString());
-        }
-        
         return sb.toString();
     }
 
     /**
-     * Devolve uma cópia de um Parque de estacionamento
+     * Cria uma cópia de um Parque de Estacionamento
      *
-     * @return cópia do parque
+     * @return cópia de um Parque de Estacionamento
      */
     public Parque clone() {
         return new Parque(this);
@@ -160,7 +152,7 @@ public class Parque {
     // outros métodos
 
     /**
-     * Devolve um conjunto com todas as matriculas dos lugares ocupados
+     * Método que devolve todas as matriculas dos lugares ocupados
      *
      * @return conjunto de matriculas
      */
@@ -169,97 +161,128 @@ public class Parque {
     }
 
     /**
-     * Regista uma nova ocupação de lugar
+     * Método que regista uma nova ocupação de Lugar
      *
-     * @param lug Lugar de Estacionamento
+     * @param l Lugar a adicionar
      */
-    public void adiciona_lugar(Lugar lug) {
-        if (lug != null) {
-            this.lugares.put(lug.get_matricula(), lug.clone());
-        }
+    public void adiciona_lugar(Lugar l) {
+        this.lugares.put(l.get_matricula(), l.clone());
     }
 
     /**
-     * Remove uma ocupação do Parque
+     * Método que remove o Lugar de dada matricula
      *
-     * @param matricula Matricula de um veiculo
+     * @param matricula matricula do Lugar a remover
      */
     public void remove_lugar(String matricula) {
         this.lugares.remove(matricula);
     }
 
     /**
-     * Altera o tempo disponível de um Lugar
+     * Método que altera o tempo disponível de um lugar, para uma dada matricula
      *
-     * @param matricula matricula do veiculo
-     * @param tempo tempo em minutos
+     * @param matricula matricula do Lugar
+     * @param tempo tempo a adicionar
      */
-    public void altera_temp(String matricula, int tempo) {
-        if (tempo >= 0) {
-            Lugar veiculo = this.lugares.get(matricula);
-            if (veiculo != null) {
-                veiculo.set_minutos(tempo);
-            }
+    public void altera_tempo(String matricula, int tempo) {
+        Lugar temp = this.lugares.get(matricula);
+        if (temp != null) {
+            temp.set_minutos(tempo);
         }
     }
 
-        
-    public int tempo_total() {
-        return this.lugares.entrySet().stream().mapToInt(entry -> entry.getValue().get_minutos()).sum();
+    /**
+     * Devolve a quantidade total de minutos
+     * Versão de Iteradores Internos
+     *
+     * @return total de minutos
+     */
+    public int total_minutos_I() {
+        return this.lugares.values().stream().mapToInt(Lugar::get_minutos).sum();
     }
 
-    /*
-    public int tempo_total() {
+    /**
+     * Devolve a quantidade total de minutos
+     * Versão de Iteradores Externos
+     *
+     * @return total de minutos
+     */
+    public int total_minutos_E() {
+        Iterator<Lugar> iterator = this.lugares.values().iterator();
         int total = 0;
-        Iterator<Map.Entry<String, Lugar>> iterator = this.lugares.entrySet().iterator();
 
         while (iterator.hasNext()) {
-            total += iterator.next().getValue().get_minutos();
+            total += iterator.next().get_minutos();
         }
 
         return total;
     }
-    */
 
-
-    public boolean existe_matricula(String matricula) {
+    /**
+     * Método que verifica existe lugar atribuído a uma dada matrícula
+     *
+     * @param matricula matricula correspondente ao Lugar
+     * @return true se o Lugar existir
+     */
+    public boolean existe_lugar(String matricula) {
         return this.lugares.containsKey(matricula);
     }
 
-    public List<String> matriculas_permanentes_x(int x) {
-        return this.lugares.entrySet().stream()
-                                      .filter(entry -> entry.getValue().get_permanente() == true && entry.getValue().get_minutos() > x)
-                                      .map(entry -> entry.getKey())
-                                      .collect(Collectors.toList());
+    /**
+     * Devolve uma lista com as matriculas dos lugares com tempo atribuido maior que x
+     * Versão de Iteradores Internos
+     *
+     * @return lista de matriculas
+     */
+    public List<String> duracao_mais_x_I(int x) {
+        return this.lugares.values().stream()
+                                    .filter(l -> l.get_minutos() > x)
+                                    .map(Lugar::get_matricula)
+                                    .collect(Collectors.toList());
     }
 
-    /*
-    public List<String> matriculas_permanentes_x(int x) {
-        List<String> resultado = new ArrayList<String>();
+    /**
+     * Devolve uma lista com as matriculas dos lugares com tempo atribuido maior que x
+     * Versão de Iteradores Externos
+     *
+     * @return lista de matriculas
+     */
+    public List<String> duracao_mais_x_E(int x) {
+        List<String> res = new ArrayList<String>();
         Iterator<Map.Entry<String, Lugar>> iterator = this.lugares.entrySet().iterator();
         Map.Entry<String, Lugar> temp = null;
-        
+
         while (iterator.hasNext()) {
             temp = iterator.next();
-            if (temp.getValue().get_permanente() == true && temp.getValue().get_minutos() > x) {
-                resultado.add(temp.getKey());
+            if (temp.getValue().get_minutos() > x) {
+                res.add(temp.getKey());
             }
         }
 
-        return resultado;
-    }
-    */
-
-    public List<Lugar> copia_lugares() {
-        return this.lugares.entrySet().stream().map(entry -> entry.getValue().clone()).collect(Collectors.toList());
+        return res;
     }
 
-    public String informacao_lugar(String matricula) {
+    /**
+     * Método que devolve uma cópia dos lugares
+     *
+     * @return cópia dos lugares
+     */
+    public List<Lugar> get_lugares() {
+        return this.lugares.values().stream().map(Lugar::clone).collect(Collectors.toList());
+    }
+
+    /**
+     * Método que devolve a informação de um lugar para uma dada matricula
+     *
+     * @param matricula matricula correspondente a um Lugar
+     * @return Lugar correspondente à matricula
+     */
+    public Lugar get_lugar(String matricula) {
         Lugar temp = this.lugares.get(matricula);
         if (temp != null) {
-            return temp.toString();
+            return temp.clone();
         }
 
-        return "";
+        return null;
     }
 }
