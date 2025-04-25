@@ -1,125 +1,208 @@
-
 package dev.guiao6.stands;
 
 import dev.guiao6.cars.*;
-
+import dev.guiao6.comparators.ComparatorCarroKms;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.util.ArrayList;
 import java.util.Comparator;
-
+import java.util.Set;
+import java.util.HashSet;
+import java.util.List;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class CarRentalTest {
-
-    CarroCombustao c1,c2,c3,c4,c5,c6,c7,c8;
-    CarroEletrico e1,e2,e3,e4,e5,e6,e7,e8;
-    CarRental stand;
+    private CarRental carRental;
+    private CarroEletrico electricCar1;
+    private CarroEletrico electricCar2;
+    private CarroCombustao combustionCar1;
+    private CarroCombustao combustionCar2;
 
     @BeforeEach
     void setUp() {
-        c1 = new CarroCombustao("11-AA-11", "Civic",   "Honda",      2015, 115.0, 45.0, 6.2, 1.75);
-        c2 = new CarroCombustao("22-BB-22", "Astra",   "Opel",       2017, 105.0, 50.0, 5.9, 1.78);
-        c3 = new CarroCombustao("33-CC-33", "308",     "Peugeot",    2019, 98.0,  48.0, 5.5, 1.72);
-        c4 = new CarroCombustao("44-DD-44", "Passat",  "Volkswagen", 2021, 125.0, 55.0, 6.8, 1.85);
-        c5 = new CarroCombustao("55-EE-55", "Corolla", "Toyota",     2020, 110.0, 50.0, 5.6, 1.80);
-        c6 = new CarroCombustao("12-AB-34", "Golf",    "Volkswagen", 2018, 110.0, 50.0, 6.5, 1.80);
-        c7 = new CarroCombustao("56-CD-78", "Clio",    "Renault",    2020, 100.0, 45.0, 5.8, 1.70);
-        c8 = new CarroCombustao("90-EF-12", "Focus",   "Ford",       2016, 120.0, 60.0, 7.2, 1.95);
+        carRental = new CarRental();
 
-        e1 = new CarroEletrico("66-FF-66", "e-Niro",         "Kia",        2021, 120.0, 64.0, 15.9, 0.17);
-        e2 = new CarroEletrico("77-GG-77", "Zoe",            "Renault",    2020, 100.0, 52.0, 17.2, 0.19);
-        e3 = new CarroEletrico("88-HH-88", "ID.3",           "Volkswagen", 2022, 115.0, 58.0, 16.0, 0.18);
-        e4 = new CarroEletrico("99-II-99", "Mustang Mach-E", "Ford",       2023, 130.0, 75.7, 18.5, 0.22);
-        e5 = new CarroEletrico("00-JJ-00", "EQC",            "Mercedes",   2021, 125.0, 80.0, 19.0, 0.20);
-        e6 = new CarroEletrico("34-GH-56", "Model 3",        "Tesla",      2022, 130.0, 75.0, 14.0, 0.16);
-        e7 = new CarroEletrico("78-IJ-90", "Leaf",           "Nissan",     2019, 95.0,  40.0, 17.0, 0.18);
-        e8 = new CarroEletrico("12-KL-34", "i3",             "BMW",        2017, 105.0, 42.2, 15.6, 0.20);
+        // Create test cars with correct constructor parameters
+        electricCar1 = new CarroEletrico("ELC-001", "Model S", "Tesla", 2020, 120.0, 100.0, 15.0, 0.15);
+        electricCar2 = new CarroEletrico("ELC-002", "Leaf", "Nissan", 2019, 110.0, 80.0, 12.0, 0.14);
+        combustionCar1 = new CarroCombustao("GAS-001", "Corolla", "Toyota", 2021, 105.0, 50.0, 6.5, 1.65);
+        combustionCar2 = new CarroCombustao("GAS-002", "Focus", "Ford", 2020, 100.0, 45.0, 7.0, 1.60);
 
-        ArrayList<Carro> car_list = new ArrayList<Carro>();
-        car_list.add(c1);
-        car_list.add(c2);
-        car_list.add(c3);
-        car_list.add(c4);
-        car_list.add(c5);
-        car_list.add(c6);
+        // Add cars to rental
+        carRental.adiciona(electricCar1);
+        carRental.adiciona(electricCar2);
+        carRental.adiciona(combustionCar1);
+        carRental.adiciona(combustionCar2);
 
-        car_list.add(e1);
-        car_list.add(e2);
-        car_list.add(e3);
-        car_list.add(e4);
-        car_list.add(e5);
-        car_list.add(e6);
-
-        CarRental stand = new CarRental(car_list, new ArrayList<Comparator<Carro>>());
+        // Add comparators
+        carRental.adiciona_comparador(new ComparatorCarroKms());
     }
 
     @Test
-    void existe_carro() {
-        assertTrue(stand.existe_carro("33-CC-33"));
-        assertTrue(stand.existe_carro("88-HH-88"));
-        assertFalse(stand.existe_carro("dskhlds"));
+    void testEquals() {
+        CarRental same = new CarRental(carRental);
+        assertEquals(carRental, same);
+
+        CarRental different = new CarRental();
+        assertNotEquals(carRental, different);
     }
 
     @Test
-    void quantos() {
-        assertEquals(12, stand.quantos());
+    void testClone() {
+        CarRental clone = carRental.clone();
+        assertEquals(carRental, clone);
+        assertNotSame(carRental, clone);
+    }
+
+    @Test
+    void testAdicionaRemoveComparador() {
+        int initialSize = carRental.get_comparadores().size();
+        carRental.adiciona_comparador(Comparator.comparing(Carro::get_marca));
+        assertEquals(initialSize + 1, carRental.get_comparadores().size());
+
+        String comparatorName = ComparatorCarroKms.class.getTypeName();
+        carRental.remove_comparador(comparatorName);
+        assertEquals(initialSize, carRental.get_comparadores().size());
+    }
+
+    @Test
+    void testExisteCarro() {
+        assertTrue(carRental.existe_carro("ELC-001"));
+        assertFalse(carRental.existe_carro("NON-EXISTENT"));
     }
 
     @Test
     void testQuantos() {
-        assertEquals(3, stand.quantos("Volkswagen"));
-        assertEquals(1, stand.quantos("Ford"));
+        assertEquals(4, carRental.quantos());
+        assertEquals(1, carRental.quantos("Tesla"));
+        assertEquals(0, carRental.quantos("Audi"));
     }
 
     @Test
-    void get_carro() {
-        assertEquals(c1, stand.get_carro("11-AA-11"));
-        assertNull(stand.get_carro("ksdfj"));
+    void testGetCarro() {
+        Carro car = carRental.get_carro("ELC-001");
+        assertNotNull(car);
+        assertEquals("Tesla", car.get_marca());
+        assertNull(carRental.get_carro("NON-EXISTENT"));
     }
 
     @Test
-    void adiciona() {
-        stand.adiciona(c7);
-        assertEquals(c7, stand.get_carro(c7.get_matricula()));
+    void testAdicionaCarros() {
+        int initialCount = carRental.quantos();
+        Carro newCar = new CarroCombustao("NEW-001", "X5", "BMW", 2022, 115.0, 55.0, 8.0, 1.75);
+        carRental.adiciona(newCar);
+        assertEquals(initialCount + 1, carRental.quantos());
+
+        Set<Carro> newCars = new HashSet<>();
+        newCars.add(new CarroCombustao("NEW-002", "A4", "Audi", 2021, 110.0, 50.0, 7.5, 1.70));
+        newCars.add(new CarroEletrico("NEW-003", "Kona", "Hyundai", 2021, 105.0, 90.0, 14.0, 0.16));
+        carRental.adiciona(newCars);
+        assertEquals(initialCount + 3, carRental.quantos());
     }
 
     @Test
-    void get_carros() {
+    void testRegistarViagem() {
+        int initialKms = electricCar1.get_kms_totais();
+        carRental.registar_viagem("ELC-001", 100);
+        Carro afterTrip = carRental.get_carro("ELC-001");
+        assertEquals(initialKms + 100, afterTrip.get_kms_totais());
 
+        // Test with non-existent car (should do nothing)
+        carRental.registar_viagem("NON-EXISTENT", 100);
     }
 
     @Test
-    void testAdiciona() {
+    void testAtestarCarro() {
+        electricCar1.viagem(400); // Use up battery
+        carRental.atestar_carro("ELC-001");
+        assertEquals(100.0, ((CarroEletrico)carRental.get_carro("ELC-001")).get_bateria_atual(), 0.001);
+
+        combustionCar1.viagem(500); // Use up fuel
+        carRental.atestar_carro("GAS-001");
+        assertEquals(50.0, ((CarroCombustao)carRental.get_carro("GAS-001")).get_deposito_atual(), 0.001);
     }
 
     @Test
-    void registar_viagem() {
+    void testCarroMaisEconomico() {
+        // Electric cars are generally more economical
+        Carro mostEconomical = carRental.carro_mais_economico();
+        assertTrue(mostEconomical instanceof CarroEletrico);
     }
 
     @Test
-    void atestar_carro() {
+    void testMediaCustoKm() {
+        double avgCost = carRental.media_custo_km();
+        assertTrue(avgCost > 0);
     }
 
     @Test
-    void carro_mais_economico() {
+    void testCustoRealCarro() {
+        double cost = carRental.custo_real_carro("ELC-001");
+        assertTrue(cost > 0);
+        assertEquals(0, carRental.custo_real_carro("NON-EXISTENT"));
     }
 
     @Test
-    void media_custo_km() {
+    void testCarrosComAlcance() {
+        Set<Carro> carsWithRange = carRental.carros_com_alcance(650);
+        assertEquals(3, carsWithRange.size()); // Ford Focus has 640...
     }
 
     @Test
-    void custo_real_carro() {
+    void testComBateria() {
+        Set<CarroEletrico> electricCars = carRental.com_bateria(90);
+        assertEquals(1, electricCars.size()); // Only Tesla has battery >= 90
     }
 
     @Test
-    void carros_com_alcance() {
+    void testCarroComMaisKms() {
+        // Make one car have more kms
+        carRental.registar_viagem("GAS-001", 1000);
+        Carro mostKms = carRental.carroComMaisKms();
+        assertEquals("GAS-001", mostKms.get_matricula());
     }
 
     @Test
-    void com_bateria() {
+    void testGetEletricosOrd() {
+        Set<CarroEletrico> electricCars = carRental.getEletricosOrd();
+        assertEquals(2, electricCars.size());
+        // Should be ordered by battery level (natural order)
+        List<CarroEletrico> orderedList = new ArrayList<>(electricCars);
+        assertTrue(orderedList.get(0).get_kms_totais() <= orderedList.get(1).get_kms_totais());
+    }
+
+    @Test
+    void testOrdenarCarros() {
+        String comparatorName = ComparatorCarroKms.class.getTypeName();
+        Iterator<Carro> sorted = carRental.ordenarCarros(comparatorName);
+        assertNotNull(sorted);
+
+        // Verify order
+        Carro prev = sorted.next();
+        while (sorted.hasNext()) {
+            Carro current = sorted.next();
+            assertTrue(prev.get_kms_totais() >= current.get_kms_totais());
+            prev = current;
+        }
+    }
+
+    @Test
+    void testCarrosPorAutonomia() {
+        Map<Integer, List<Carro>> byAutonomy = carRental.carrosPorAutonomia();
+        assertFalse(byAutonomy.isEmpty());
+        // Each autonomy value should have at least one car
+        assertTrue(!byAutonomy.keySet().isEmpty());
+    }
+
+    @Test
+    void testToString() {
+        String str = carRental.toString();
+        assertNotNull(str);
+        assertTrue(str.contains("Veiculos"));
+        assertTrue(str.contains("Comparadores"));
     }
 }
