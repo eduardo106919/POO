@@ -9,7 +9,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.List;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Comparator;
 import java.util.Collection;
@@ -325,21 +324,12 @@ public class CarRental {
      * @return conjunto de carros eletricos
      */
     public Set<CarroEletrico> com_bateria(int nivel_minimo) {
-        CarroEletrico temp = null;
-        Iterator<Carro> iterator = this.veiculos.values().iterator();
-        HashSet<CarroEletrico> result = new HashSet<CarroEletrico>();
-        Carro other = null;
-
-        while (iterator.hasNext()) {
-            other = iterator.next();
-            if (other.getClass().getTypeName().equals("CarroEletrico")) {
-                temp = (CarroEletrico) other;
-                if (temp.get_bateria_atual() >= nivel_minimo)
-                    result.add(temp);
-            }
-        }
-        
-        return result;
+        return this.veiculos.values().stream()
+                .filter(c -> c instanceof CarroEletrico)
+                .map(c -> (CarroEletrico) c)
+                .filter(c -> c.get_bateria_atual() >= nivel_minimo)
+                .map(CarroEletrico::clone)
+                .collect(Collectors.toSet());
     }
 
     /**
@@ -363,7 +353,7 @@ public class CarRental {
      */
     public Set<CarroEletrico> getEletricosOrd() {
         return this.veiculos.values().stream()
-                .filter(c -> c.getClass().getTypeName().equals("CarroEletrico"))
+                .filter(c -> c instanceof CarroEletrico)
                 .map(c -> (CarroEletrico) c.clone())
                 .sorted((c1, c2) -> ((CarroEletrico) c1).compareTo(c2))
                 .collect(Collectors.toSet());
