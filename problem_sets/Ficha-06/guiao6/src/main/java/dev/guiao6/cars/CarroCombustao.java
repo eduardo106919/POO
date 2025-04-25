@@ -1,13 +1,12 @@
 
-
-import java.io.Serializable;
+package dev.guiao6.cars;
 
 
 
 /**
  * Classe que representa um Carro a Combustão, a diesel ou gasolina
  */
-public class CarroCombustao extends Carro implements Serializable {
+public class CarroCombustao extends Carro {
 
     /**
      * Variáveis de Instância

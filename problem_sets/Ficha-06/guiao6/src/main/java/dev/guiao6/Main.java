@@ -1,4 +1,9 @@
-import java.util.ArrayList;
+package dev.guiao6;
+
+import dev.guiao6.cars.*;
+import dev.guiao6.stands.*;
+
+import java.util.*;
 
 /**
  * Classe de teste para a Ficha 06
@@ -11,6 +16,15 @@ public class Main {
      * @param args argumentos da linha de comandos
      */
     public static void main(String[] args) {
+
+        Map<String, String> m1 = new HashMap<>();
+        Map<String, String> m2 = new HashMap<>();
+
+        m1.put("chave", "valor");
+        m2.put("chave", "valor");
+
+        System.out.println(m1.equals(m2));  // true
+
 
         System.out.println("----- Ficha 06 -----");
         
@@ -47,7 +61,7 @@ public class Main {
         car_list.add(e5);
         car_list.add(e6);
 
-        CarRental stand = new CarRental(car_list);
+        CarRental stand = new CarRental(car_list, new ArrayList<Comparator<Carro>>());
 
         // teste: toString()
         System.out.println(stand.toString());

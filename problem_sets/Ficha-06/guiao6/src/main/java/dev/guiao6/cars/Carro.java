@@ -1,4 +1,5 @@
 
+package dev.guiao6.cars;
 
 import java.io.Serializable;
 
@@ -6,7 +7,7 @@ import java.io.Serializable;
 /**
  * Classe que representa um Carro
  */
-public abstract class Carro implements Serializable, Comparable<Carro> {
+public abstract class Carro implements Serializable {
 
     /**
      * Variáveis de Instância
@@ -265,17 +266,6 @@ public abstract class Carro implements Serializable, Comparable<Carro> {
      * @return cópia de um Carro
      */
     public abstract Carro clone();
-
-    /**
-     * Compara um Carro ao receptor da mensagem
-     *
-     * @param outro Carro a comparar
-     * @return 0 se forem iguais, 1 se o receptor for maior, -1 se for menor
-     */
-    @Override
-    public int compareTo(Carro outro) {
-        return (int) (this.custo_real() - outro.custo_real());
-    }
 
     // outros métodos
 

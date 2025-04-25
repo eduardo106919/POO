@@ -1,10 +1,9 @@
-
-import java.io.Serializable;
+package dev.guiao6.cars;
 
 /**
  * Classe que representa um Carro a Combustão, a diesel ou gasolina
  */
-public class CarroEletrico extends Carro implements Serializable {
+public class CarroEletrico extends Carro implements Comparable<CarroEletrico> {
 
     /**
      * Variáveis de Instância
@@ -115,7 +114,7 @@ public class CarroEletrico extends Carro implements Serializable {
     /**
      * Altera a capacidade máxima da bateria do Carro Eletrico
      *
-     * @param deposito capacidade da bateria
+     * @param bateria capacidade da bateria
      */
     public void set_deposito(double bateria) {
         this.bateria = bateria;
@@ -196,6 +195,23 @@ public class CarroEletrico extends Carro implements Serializable {
         return new CarroEletrico(this);
     }
 
+    /**
+     * Estabele a ordem natural de um Carro Eletrico
+     *
+     * @param car Carro Eletrico a comparar
+     * @return 0 se forem iguais, -1 se o receptor for menor, caso contrario 1
+     */
+    public int compareTo(CarroEletrico car) {
+        int k1 = this.get_kms_totais();
+        int k2 = car.get_kms_totais();
+
+        if (k1 == k2) {
+            return (int) (car.get_bateria() - this.get_bateria());
+        }
+
+        return k1 - k2;
+    }
+
     // outros métodos
 
     /**
@@ -226,7 +242,7 @@ public class CarroEletrico extends Carro implements Serializable {
     /**
      * Atualiza a quantidade de energia na bateria
      *
-     * @param distancia distancia percorrida
+     * @param kms distancia percorrida
      */
     private void atualiza_bateria_atual(int kms) {
         this.bateria_atual -= kms / this.consumo_km();

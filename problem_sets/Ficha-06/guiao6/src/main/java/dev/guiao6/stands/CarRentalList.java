@@ -1,3 +1,7 @@
+package dev.guiao6.stands;
+
+import dev.guiao6.cars.Carro;
+
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.ArrayList;
