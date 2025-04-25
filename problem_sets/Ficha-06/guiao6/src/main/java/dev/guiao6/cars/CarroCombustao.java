@@ -230,7 +230,7 @@ public class CarroCombustao extends Carro {
      * @param kms percorrida
      */
     private void atualiza_deposito_atual(int kms) {
-        this.deposito_atual -= kms / this.consumo_km();
+        this.deposito_atual -= kms * this.consumo_km();
     }
 
     /**
@@ -260,7 +260,7 @@ public class CarroCombustao extends Carro {
      * @return custo real
      */
     public double custo_real() {
-        return this.custo_km() + this.custo_km() * (Carro.get_custo_extra() / 100);
+        return this.custo_km() + this.custo_km() * (Carro.get_custo_extra() / 100.00);
     }
 
 }

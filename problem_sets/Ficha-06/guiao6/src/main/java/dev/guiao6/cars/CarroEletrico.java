@@ -245,7 +245,7 @@ public class CarroEletrico extends Carro implements Comparable<CarroEletrico> {
      * @param kms distancia percorrida
      */
     private void atualiza_bateria_atual(int kms) {
-        this.bateria_atual -= kms / this.consumo_km();
+        this.bateria_atual -= kms * this.consumo_km();
     }
 
     /**
@@ -275,6 +275,6 @@ public class CarroEletrico extends Carro implements Comparable<CarroEletrico> {
      * @return custo real
      */
     public double custo_real() {
-        return this.custo_km() + this.custo_km() * (Carro.get_custo_extra() / 100);
+        return this.custo_km() + this.custo_km() * (Carro.get_custo_extra() / 100.00);
     }
 }

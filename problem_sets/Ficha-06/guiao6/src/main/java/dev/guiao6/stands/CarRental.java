@@ -332,7 +332,7 @@ public class CarRental {
 
         while (iterator.hasNext()) {
             other = iterator.next();
-            if (temp.getClass().getTypeName().equals("CarroEletrico")) {
+            if (other.getClass().getTypeName().equals("CarroEletrico")) {
                 temp = (CarroEletrico) other;
                 if (temp.get_bateria_atual() >= nivel_minimo)
                     result.add(temp);
