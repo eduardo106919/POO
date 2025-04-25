@@ -95,7 +95,7 @@ public class Ficha2 {
      */
     public void insert_date(LocalDate date) {
         // array is full
-        if (current == this.dates.length) {
+        if (this.current == this.dates.length) {
             LocalDate[] aux = new LocalDate[this.dates.length * 2];
 
             int i = 0;
@@ -133,9 +133,9 @@ public class Ficha2 {
         LocalDate result = null;
 
         // find the closest date
-        for (LocalDate ite: this.dates) {
-            if (this.date_difference(date, ite) < max) {
-                result = ite;
+        for (int i = 0; i < this.current; i++) {
+            if (this.date_difference(date, this.dates[i]) < max) {
+                result = this.dates[i];
             }
         }
 
@@ -246,7 +246,7 @@ public class Ficha2 {
                 result[index++] = words[i];
         }
 
-        return result;
+        return Arrays.copyOfRange(result, 0, index);
     }
 
     /**
