@@ -9,6 +9,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.List;
 import java.util.HashMap;
+import java.util.TreeSet;
 import java.util.Iterator;
 import java.util.Comparator;
 import java.util.Collection;
@@ -84,6 +85,15 @@ public class CarRental {
      */
     public List<Comparator<Carro>> get_comparadores() {
         return this.comparadores.values().stream().collect(Collectors.toList());
+    }
+
+    /**
+     * Altera os comparadores do stand
+     *
+     * @param comps coleção de comparadores
+     */
+    public void set_comparadores(Collection<Comparator<Carro>> comps) {
+        comps.forEach(c -> this.comparadores.put(c.getClass().getSimpleName(), c));
     }
 
     // métodos de utilidade
@@ -355,8 +365,8 @@ public class CarRental {
         return this.veiculos.values().stream()
                 .filter(c -> c instanceof CarroEletrico)
                 .map(c -> (CarroEletrico) c.clone())
-                .sorted((c1, c2) -> ((CarroEletrico) c1).compareTo(c2))
-                .collect(Collectors.toSet());
+                .sorted((c1, c2) -> c1.compareTo(c2))
+                .collect(Collectors.toCollection(TreeSet::new));
     }
 
     /**
