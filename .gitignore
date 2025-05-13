@@ -30,3 +30,5 @@ replay_pid*
 .project
 target/
 .gitignore
+
+!DriveIT2023.zip
