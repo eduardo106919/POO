@@ -1,14 +1,18 @@
-# POO
-Resolutions of the problem sets in **Object Oriented Programming** 2024/2025
+# Programação Orientada a Objetos
 
-## Contents
-The resolutions provided are:
-- Problem Sets
-- Tests (**not yet**)
-- Project (**not yet**)
+Conteúdo abordado na unidade curricular **Programação Orientada a Objetos** no ano letivo **2024/2025**.
 
-The UML diagrams presented are made in [Visual Paradigm CE](https://www.visual-paradigm.com/editions/community/).
+## Conteúdo
+
+Neste repositório poderás encontrar o seguinte conteúdo:
+- resolução das [fichas](fichas/) práticas
+- resolução de [testes](testes/) e exames de anos anteriores
+- [slides](slides/) com a matéria abordada na cadeira
+- enunciados de [trabalhos](trabalhos/) práticos de vários anos
+
+Os diagramas UML apresentados são feitos no [Visual Paradigm CE](https://www.visual-paradigm.com/editions/community/).
 
 ---
 
-:warning: These are **personal** resolutions, so don't assume they are totally correct.
+Se encontrarem **erros** ou acharem que algo pode estar melhor entrem em [contacto](mailto:a106919@alunos.uminho.pt) comigo.
+
