@@ -9,6 +9,7 @@
 /** conhecimentos de POO.                                                        */
 /*********************************************************************************/
 
+package dev.example;
 
 /**
  * Representacao de Linha de Encomenda
